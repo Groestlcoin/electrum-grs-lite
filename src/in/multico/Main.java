@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import in.multico.controller.MsgController;
 import in.multico.listener.ShowListener;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +50,14 @@ public class Main extends Application {
         primaryStage.setTitle("Multicoin wallet");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.out.println("Begin close...");
+                SyncService.getInstance(wallet).stopAll();
+                Platform.exit();
+            }
+        });
     }
 
     public static void refreshLayout(ActionEvent event, String layout) {
