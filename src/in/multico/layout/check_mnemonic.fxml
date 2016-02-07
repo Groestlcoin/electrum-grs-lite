@@ -9,6 +9,9 @@
 <GridPane fx:controller="in.multico.controller.CheckMnemonicController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <VBox alignment="CENTER" GridPane.columnSpan="5" GridPane.rowIndex="0">
+        <padding>
+            <Insets bottom="40"/>
+        </padding>
         <Label text="Введите слова кода кошелька"/>
         <Label text="Порядок слов имеет значение"/>
     </VBox>
@@ -34,7 +37,7 @@
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w16" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
 
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w17" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
-    <AutoFillTextBox fx:id="w18" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
+    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w18" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
 
     <Button onAction="#next" text="Далее" GridPane.columnIndex="4" GridPane.rowIndex="6" />
     <Label prefWidth="10" GridPane.columnIndex="5" GridPane.rowIndex="6" />

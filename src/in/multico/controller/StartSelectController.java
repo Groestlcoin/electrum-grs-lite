@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 
 import java.util.List;
 
-public class StartSelectController extends ControllerBased{
+public class StartSelectController {
 
     public Label rez;
 
@@ -31,12 +31,7 @@ public class StartSelectController extends ControllerBased{
 
     @FXML
     private void importWallet(ActionEvent event) {
-        Main.refreshLayout(event, "check_mnemonic.fxml", null);
+        Main.refreshLayout(event, "check_mnemonic.fxml");
     }
 
-
-    @Override
-    public void init() {
-
-    }
 }

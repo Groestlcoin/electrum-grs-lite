@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class SetPasswordController extends ControllerBased{
+public class SetPasswordController {
 
     public TextField pass, repass;
     private List<String> mm;
@@ -33,6 +33,7 @@ public class SetPasswordController extends ControllerBased{
             wallet.encrypt(crypter, aesKey);
             wallet.createAccount(BitcoinMain.get(), false, aesKey);
             Main.getInstance().setWallet(wallet);
+            Main.refreshLayout(event, "main.fxml");
         } catch (Exception e) {
             e.printStackTrace();
             Main.showMessage("Ошибка создания кошелька: " + e.getMessage());
@@ -43,8 +44,4 @@ public class SetPasswordController extends ControllerBased{
         this.mm = mm;
     }
 
-    @Override
-    public void init() {
-
-    }
 }

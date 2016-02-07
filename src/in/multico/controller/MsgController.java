@@ -7,7 +7,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class MsgController extends ControllerBased{
+public class MsgController {
 
     public Label rez;
 
@@ -20,11 +20,5 @@ public class MsgController extends ControllerBased{
         Scene scene = ((Control)event.getSource()).getScene();
         Stage stage = (Stage) scene.getWindow();
         stage.close();
-    }
-
-
-    @Override
-    public void init() {
-
     }
 }

@@ -7,6 +7,9 @@
 <GridPane fx:controller="in.multico.controller.ShowMnemonicController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
     <VBox GridPane.columnSpan="4" GridPane.rowIndex="0">
+        <padding>
+            <Insets bottom="40"/>
+        </padding>
         <Label text="Запишите слова и сохраните в надёжном месте."/>
         <Label text="С их помощью вы всегда сможете восстановить ваш кошелёк"/>
     </VBox>

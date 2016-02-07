@@ -6,10 +6,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import np.com.ngopal.control.AutoFillTextBox;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +20,7 @@ import java.util.List;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class CheckMnemonicController extends ControllerBased{
+public class CheckMnemonicController implements Initializable{
 
     public AutoFillTextBox w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18;
     private List<String> mm;
@@ -74,25 +77,25 @@ public class CheckMnemonicController extends ControllerBased{
 
     public void setMnemonic(List<String> mm) {
         this.mm = mm;
-//        // TODO: stub
-//        w1.getTextbox().setText(mm.get(0));
-//        w2.getTextbox().setText(mm.get(1));
-//        w3.getTextbox().setText(mm.get(2));
-//        w4.getTextbox().setText(mm.get(3));
-//        w5.getTextbox().setText(mm.get(4));
-//        w6.getTextbox().setText(mm.get(5));
-//        w7.getTextbox().setText(mm.get(6));
-//        w8.getTextbox().setText(mm.get(7));
-//        w9.getTextbox().setText(mm.get(8));
-//        w10.getTextbox().setText(mm.get(9));
-//        w11.getTextbox().setText(mm.get(10));
-//        w12.getTextbox().setText(mm.get(11));
-//        w13.getTextbox().setText(mm.get(12));
-//        w14.getTextbox().setText(mm.get(13));
-//        w15.getTextbox().setText(mm.get(14));
-//        w16.getTextbox().setText(mm.get(15));
-//        w17.getTextbox().setText(mm.get(16));
-//        w18.getTextbox().setText(mm.get(17));
+       // TODO: stub
+        w1.getTextbox().setText(mm.get(0));
+        w2.getTextbox().setText(mm.get(1));
+        w3.getTextbox().setText(mm.get(2));
+        w4.getTextbox().setText(mm.get(3));
+        w5.getTextbox().setText(mm.get(4));
+        w6.getTextbox().setText(mm.get(5));
+        w7.getTextbox().setText(mm.get(6));
+        w8.getTextbox().setText(mm.get(7));
+        w9.getTextbox().setText(mm.get(8));
+        w10.getTextbox().setText(mm.get(9));
+        w11.getTextbox().setText(mm.get(10));
+        w12.getTextbox().setText(mm.get(11));
+        w13.getTextbox().setText(mm.get(12));
+        w14.getTextbox().setText(mm.get(13));
+        w15.getTextbox().setText(mm.get(14));
+        w16.getTextbox().setText(mm.get(15));
+        w17.getTextbox().setText(mm.get(16));
+        w18.getTextbox().setText(mm.get(17));
     }
 
     private void showErr() {
@@ -100,7 +103,7 @@ public class CheckMnemonicController extends ControllerBased{
     }
 
     @Override
-    public void init() {
+    public void initialize(URL location, ResourceBundle resources) {
         List<String> mnemonicWorList = Main.getInstance().getMnemonicWorList();
         ObservableList<String> ol = FXCollections.observableList(mnemonicWorList);
         w1.setData(ol);
