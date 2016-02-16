@@ -56,6 +56,7 @@ public class Main extends Application {
                 System.out.println("Begin close...");
                 SyncService.getInstance(wallet).stopAll();
                 Platform.exit();
+                System.exit(0);
             }
         });
     }
