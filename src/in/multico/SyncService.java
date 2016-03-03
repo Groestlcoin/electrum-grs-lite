@@ -21,6 +21,39 @@ public class SyncService {
     private static SyncService instance;
     private ServerClients clients;
     private Wallet wallet;
+
+    public static final List<CoinType> SUPPORTED_COINS = ImmutableList.of(
+            BitcoinMain.get(),
+            DogecoinMain.get(),
+            LitecoinMain.get(),
+            DashMain.get(),
+            NuBitsMain.get(),
+            PeercoinMain.get(),
+            NamecoinMain.get(),
+            BlackcoinMain.get(),
+            ClamsMain.get(),
+            MonacoinMain.get(),
+            NuSharesMain.get(),
+            NovacoinMain.get(),
+            GcrMain.get(),
+            VpncoinMain.get(),
+            VertcoinMain.get(),
+            ShadowCashMain.get(),
+            FeathercoinMain.get(),
+            ReddcoinMain.get(),
+            DigibyteMain.get(),
+            RubycoinMain.get(),
+            DigitalcoinMain.get(),
+            DogecoindarkMain.get(),
+            JumbucksMain.get(),
+            CanadaeCoinMain.get(),
+            CannacoinMain.get(),
+            NeoscoinMain.get(),
+            ParkbyteMain.get(),
+            BitcoinTest.get(),
+            LitecoinTest.get(),
+            DogecoinTest.get()
+    );
     public static final List<CoinAddress> DEFAULT_COINS_SERVERS = ImmutableList.of(
             new CoinAddress(BitcoinMain.get(), new ServerAddress("btc-cce-1.coinomi.net", 5001), new ServerAddress("btc-cce-2.coinomi.net", 5001)),
             new CoinAddress(BitcoinTest.get(), new ServerAddress("btc-testnet-cce-1.coinomi.net", 15001), new ServerAddress("btc-testnet-cce-2.coinomi.net", 15001)),
@@ -55,6 +88,7 @@ public class SyncService {
             new CoinAddress(DogecoindarkMain.get(), new ServerAddress("doged-cce-1.coinomi.net", 5036), new ServerAddress("doged-cce-2.coinomi.net", 5036)),
             new CoinAddress(GcrMain.get(), new ServerAddress("gcr-cce-1.coinomi.net", 5038), new ServerAddress("gcr-cce-2.coinomi.net", 5038))
     );
+
 
     private SyncService(Wallet wallet) {
         this.wallet = wallet;

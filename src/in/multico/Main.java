@@ -91,6 +91,8 @@ public class Main extends Application {
 
     public static Image getCoinImage(CoinType coin) {
         String name = coin.getName();
+        name = name.replaceAll(" ", "_");
+        name = name.toLowerCase();
         InputStream stream = Main.class.getResourceAsStream("icons/" + name + ".png");
         return new Image(stream);
     }
