@@ -7,9 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="in.multico.controller.MainController">
+<BorderPane prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.multico.controller.MainController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" BorderPane.alignment="CENTER">
          <padding>
@@ -34,22 +32,22 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </Label>
-             <Button mnemonicParsing="false" text="Скопировать" onAction="#copyAddr">
+             <Button mnemonicParsing="false" onAction="#copyAddr" text="Скопировать">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
              </Button>
-            <Button mnemonicParsing="false" text="Отправить" onAction="#sendCoin">
+            <Button mnemonicParsing="false" onAction="#sendCoin" text="Отправить">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-             <Button mnemonicParsing="false" text="Получить" onAction="#invoice">
+             <Button mnemonicParsing="false" onAction="#invoice" text="Получить">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
              </Button>
-             <Button mnemonicParsing="false" text="Обменять" onAction="#exchange">
+             <Button mnemonicParsing="false" onAction="#exchange" text="Обменять">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
@@ -65,10 +63,51 @@
           <items>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ListView fx:id="coinsList" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <BorderPane prefHeight="204.0" prefWidth="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <center>
+                            <ListView fx:id="coinsList" prefHeight="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                       </center>
+                       <bottom>
+                          <Button alignment="CENTER" mnemonicParsing="false" onAction="#addNewCoin" text="Добавить монету" BorderPane.alignment="CENTER">
+                              <VBox.margin>
+                                  <Insets bottom="10.0" top="10.0" />
+                              </VBox.margin>
+                           <BorderPane.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </BorderPane.margin></Button>
+                       </bottom>
+                  </BorderPane>
                </children>
             </AnchorPane>
-            <AnchorPane minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="158.0" prefWidth="116.0" />
+            <AnchorPane minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="158.0" prefWidth="116.0">
+               <children>
+                  <BorderPane prefHeight="204.0" prefWidth="648.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <top>
+                        <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Последние транзакции:">
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </top>
+                     <center>
+                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                          <columns>
+                            <TableColumn prefWidth="100.0" text="Дата" />
+                            <TableColumn prefWidth="100.0" text="Сумма" />
+                              <TableColumn prefWidth="75.0" text="Статус" />
+                              <TableColumn prefWidth="250.0" text="Получатель/Отправитель" />
+                          </columns>
+                        </TableView>
+                     </center>
+                  </BorderPane>
+               </children></AnchorPane>
           </items>
         </SplitPane>
    </center>

@@ -30,7 +30,6 @@ public class MainController implements Initializable{
     @FXML public Label coinAmt;
     @FXML public Label coinAddr;
     private HashMap <String, WalletAccount> cIndx = new HashMap<>();
-    private static final String NEW_COIN = "New coin...";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -40,7 +39,6 @@ public class MainController implements Initializable{
             coins.add(s);
             cIndx.put(s, acc);
         }
-        coins.add(NEW_COIN);
         coinsList.setItems(coins);
         coinsList.getSelectionModel().selectedItemProperty().addListener(
                 new ChangeListener<String>() {
@@ -49,42 +47,35 @@ public class MainController implements Initializable{
                     }
                 });
         coinsList.getSelectionModel().selectFirst();
-//        Window window = coinIcon.getScene().getWindow();
-//        window.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//            @Override
-//            public void handle(WindowEvent event) {
-//                System.out.println("close!");
-//            }
-//        });
     }
 
     private void setCoin(String str) {
-        if (NEW_COIN.equals(str)) {
-            addNewCoin();
-            return;
-        }
         WalletAccount wa = cIndx.get(str);
         coinIcon.setImage(Main.getCoinImage(wa.getCoinType()));
         coinAmt.setText(wa.getBalance().toFriendlyString());
     }
 
-    private void addNewCoin() {
+    @FXML
+    public void addNewCoin(ActionEvent actionEvent) {
         Main.showMessage("В разработке...");
     }
 
+    @FXML
     public void copyAddr(ActionEvent actionEvent) {
         Main.showMessage("В разработке...");
     }
 
-
+    @FXML
     public void sendCoin(ActionEvent actionEvent) {
         Main.showMessage("В разработке...");
     }
 
+    @FXML
     public void invoice(ActionEvent actionEvent) {
         Main.showMessage("В разработке...");
     }
 
+    @FXML
     public void exchange(ActionEvent actionEvent) {
         Main.showMessage("В разработке...");
     }
