@@ -13,7 +13,7 @@
         <padding>
             <Insets bottom="25" right="25"/>
         </padding>
-        <Button text="Закрыть" onAction="#close" />
+        <Button text="%close" onAction="#close" />
     </HBox>
     </bottom>
 

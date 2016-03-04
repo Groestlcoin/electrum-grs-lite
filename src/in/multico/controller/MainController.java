@@ -16,10 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,21 +71,21 @@ public class MainController implements Initializable{
 
     @FXML
     public void copyAddr(ActionEvent actionEvent) {
-        Main.showMessage("В разработке...");
+        Main.showMessage(Main.getLocString("soon"));
     }
 
     @FXML
     public void sendCoin(ActionEvent actionEvent) {
-        Main.showMessage("В разработке...");
+        Main.showMessage(Main.getLocString("soon"));
     }
 
     @FXML
     public void invoice(ActionEvent actionEvent) {
-        Main.showMessage("В разработке...");
+        Main.showMessage(Main.getLocString("soon"));
     }
 
     @FXML
     public void exchange(ActionEvent actionEvent) {
-        Main.showMessage("В разработке...");
+        Main.showMessage(Main.getLocString("soon"));
     }
 }

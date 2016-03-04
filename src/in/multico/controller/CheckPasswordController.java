@@ -35,13 +35,13 @@ public class CheckPasswordController {
         } catch (Exception e) {
             e.printStackTrace();
             pass.setText("");
-            Main.showMessage("Ошибка! Неверный пароль.");
+            Main.showMessage(Main.getLocString("wrong_pass"));
         }
     }
 
     public void setAppendedCoin(CoinType coin) {
         addCoin = coin;
-        message.setText("Чтобы добавить " + coin.getName() + " ведите пароль кошелька");
+        message.setText(Main.getLocString("to_add") + " " + coin.getName() + " " + Main.getLocString("enter_pass"));
     }
 
 }

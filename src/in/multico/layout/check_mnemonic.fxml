@@ -15,8 +15,8 @@
         <padding>
             <Insets bottom="40"/>
         </padding>
-        <Label text="Введите слова кода кошелька"/>
-        <Label text="Порядок слов имеет значение"/>
+        <Label text="%enter_mnemonic"/>
+        <Label text="%order_impotent"/>
     </VBox>
 
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
@@ -42,6 +42,6 @@
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w17" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w18" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
 
-    <Button onAction="#next" text="Далее" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+    <Button onAction="#next" text="%next" GridPane.columnIndex="4" GridPane.rowIndex="6" />
     <Label prefWidth="10" GridPane.columnIndex="5" GridPane.rowIndex="6" />
 </GridPane>

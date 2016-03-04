@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-
+<?import javafx.scene.text.Font?>
 <BorderPane prefHeight="600" prefWidth="1000" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.multico.controller.MainController">
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="60.0" BorderPane.alignment="CENTER">
@@ -32,22 +30,22 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </Label>
-             <Button mnemonicParsing="false" onAction="#copyAddr" text="Скопировать">
+             <Button mnemonicParsing="false" onAction="#copyAddr" text="%copy">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
              </Button>
-            <Button mnemonicParsing="false" onAction="#sendCoin" text="Отправить">
+            <Button mnemonicParsing="false" onAction="#sendCoin" text="%send">
                <HBox.margin>
                   <Insets left="5.0" right="5.0" />
                </HBox.margin>
             </Button>
-             <Button mnemonicParsing="false" onAction="#invoice" text="Получить">
+             <Button mnemonicParsing="false" onAction="#invoice" text="%receive">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
              </Button>
-             <Button mnemonicParsing="false" onAction="#exchange" text="Обменять">
+             <Button mnemonicParsing="false" onAction="#exchange" text="%change">
                  <HBox.margin>
                      <Insets left="5.0" right="5.0" />
                  </HBox.margin>
@@ -68,7 +66,7 @@
                             <ListView fx:id="coinsList" prefHeight="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                        </center>
                        <bottom>
-                          <Button alignment="CENTER" mnemonicParsing="false" onAction="#addNewCoin" text="Добавить монету" BorderPane.alignment="CENTER">
+                          <Button alignment="CENTER" mnemonicParsing="false" onAction="#addNewCoin" text="%add_coin" BorderPane.alignment="CENTER">
                               <VBox.margin>
                                   <Insets bottom="10.0" top="10.0" />
                               </VBox.margin>
@@ -85,7 +83,7 @@
                      <top>
                         <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                            <children>
-                              <Label text="Последние транзакции:">
+                              <Label text="%last_txs">
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </HBox.margin>
@@ -99,10 +97,10 @@
                      <center>
                         <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
-                            <TableColumn prefWidth="100.0" text="Дата" />
-                            <TableColumn prefWidth="100.0" text="Сумма" />
-                              <TableColumn prefWidth="75.0" text="Статус" />
-                              <TableColumn prefWidth="250.0" text="Получатель/Отправитель" />
+                            <TableColumn prefWidth="100.0" text="%date" />
+                            <TableColumn prefWidth="100.0" text="%amt" />
+                              <TableColumn prefWidth="75.0" text="%status" />
+                              <TableColumn prefWidth="250.0" text="%sender_receiver" />
                           </columns>
                         </TableView>
                      </center>

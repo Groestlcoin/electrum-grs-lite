@@ -24,8 +24,8 @@ public class SetPasswordController {
 
     @FXML
     private void next(ActionEvent event) {
-        if (pass.getText().length() < 4) Main.showMessage("Пароль не может быть короче 4 символов");
-        if (!pass.getText().equals(repass.getText())) Main.showMessage("Пароли не совпадают");
+        if (pass.getText().length() < 4) Main.showMessage(Main.getLocString("err_pass_len"));
+        if (!pass.getText().equals(repass.getText())) Main.showMessage(Main.getLocString("err_passs_match"));
         try {
             Wallet wallet = new Wallet(mm);
             KeyCrypterScrypt crypter = new KeyCrypterScrypt();
@@ -36,7 +36,7 @@ public class SetPasswordController {
             Main.refreshLayout(event, "main.fxml");
         } catch (Exception e) {
             e.printStackTrace();
-            Main.showMessage("Ошибка создания кошелька: " + e.getMessage());
+            Main.showMessage(Main.getLocString("err_wallet_create") + ": " + e.getMessage());
         }
     }
 

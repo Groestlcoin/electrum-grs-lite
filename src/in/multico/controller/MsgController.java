@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class MsgController {
 
-    public Label rez;
+    @FXML public Label rez;
 
     public void setMsg(String msg){
         rez.setText(msg);

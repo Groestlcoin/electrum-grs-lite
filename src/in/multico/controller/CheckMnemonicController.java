@@ -99,7 +99,7 @@ public class CheckMnemonicController implements Initializable{
     }
 
     private void showErr() {
-        Main.showMessage("Ошибка! Проверьте введённые данные.");
+        Main.showMessage(Main.getLocString("err_data"));
     }
 
     @Override

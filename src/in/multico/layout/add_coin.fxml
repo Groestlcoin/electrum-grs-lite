@@ -14,7 +14,7 @@
             <padding>
                 <Insets top="25" bottom="25"/>
             </padding>
-            <Label text="Какую монету Вы хотите добавить?" />
+            <Label text="%what_coin_add" />
         </HBox>
     </top>
     <center>
@@ -25,7 +25,7 @@
             <padding>
                 <Insets top="25" bottom="25" right="25"/>
             </padding>
-            <Button text="Добавить" onAction="#add" />
+            <Button text="%add" onAction="#add" />
         </HBox>
     </bottom>
 

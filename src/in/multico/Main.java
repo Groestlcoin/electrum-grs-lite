@@ -22,11 +22,10 @@ import javafx.stage.WindowEvent;
 import org.bitcoinj.crypto.MnemonicCode;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
@@ -35,6 +34,7 @@ public class Main extends Application {
     private Wallet wallet;
     private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
+    private static Locale locale = new Locale("en", "EN"); // Locale.getDefault();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -46,7 +46,9 @@ public class Main extends Application {
         } else {
             startLayout = "layout/start_select.fxml";
         }
-        Parent root = FXMLLoader.load(getClass().getResource(startLayout));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
+        loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
+        Parent root = loader.load();
         primaryStage.setTitle("Multicoin wallet");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -71,6 +73,7 @@ public class Main extends Application {
         stage.close();
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + layout));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
             Parent root = loader.load();
             if (sl != null) {
                 stage.setOnShown(new EventHandler<WindowEvent>() {
@@ -100,6 +103,7 @@ public class Main extends Application {
     public static void showMessage(final String msg) {
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/msg.fxml"));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
             Parent root = loader.load();
             final Stage stage = new Stage();
             stage.setScene(new Scene(root, 400, 200));
@@ -112,6 +116,17 @@ public class Main extends Application {
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static String getLocString(String key) {
+        ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", locale);
+        String s = bundle.getString(key);
+        try {
+            return new String(s.getBytes("ISO-8859-1"), "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return s;
         }
     }
 
