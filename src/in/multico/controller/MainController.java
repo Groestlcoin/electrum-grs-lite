@@ -14,9 +14,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -71,7 +76,14 @@ public class MainController implements Initializable{
 
     @FXML
     public void copyAddr(ActionEvent actionEvent) {
-        Main.showMessage(Main.getLocString("soon"));
+        ClipboardContent content = new ClipboardContent();
+        content.putString(coinAddr.getText());
+        Clipboard.getSystemClipboard().setContent(content);
+    }
+
+    @FXML
+    public void settings(ActionEvent event) {
+        Main.refreshLayout(event, "settings.fxml");
     }
 
     @FXML

@@ -40,6 +40,10 @@ public class ShowMnemonicController {
 
     public void setMnemonic(List<String> mm) {
         this.mm = mm;
+        showMnemonic();
+    }
+
+    private void showMnemonic() {
         w1.setText(mm.get(0));
         w2.setText(mm.get(1));
         w3.setText(mm.get(2));
@@ -59,5 +63,4 @@ public class ShowMnemonicController {
         w17.setText(mm.get(16));
         w18.setText(mm.get(17));
     }
-
 }

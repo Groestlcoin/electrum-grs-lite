@@ -16,7 +16,7 @@
             <Insets bottom="40"/>
         </padding>
         <Label text="%enter_mnemonic"/>
-        <Label text="%order_impotent"/>
+        <Label text="%order_important"/>
     </VBox>
 
     <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
