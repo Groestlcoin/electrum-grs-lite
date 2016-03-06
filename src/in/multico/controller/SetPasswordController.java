@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class SetPasswordController {
+public class SetPasswordController extends ControllerBased{
 
     public TextField pass, repass;
     private List<String> mm;
@@ -44,4 +44,8 @@ public class SetPasswordController {
         this.mm = mm;
     }
 
+    @Override
+    protected void refresh() {
+
+    }
 }

@@ -18,11 +18,17 @@ import org.spongycastle.crypto.params.KeyParameter;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class CheckPasswordController {
+public class CheckPasswordController extends ControllerBased{
 
     @FXML public Label message;
     @FXML public PasswordField pass;
     private CoinType addCoin;
+
+    @Override
+    protected void refresh() {
+
+    }
+
     public enum Next {addCoin, showMnemonic}
     private Next nextStep;
 

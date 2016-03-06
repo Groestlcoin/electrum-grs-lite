@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class CheckMnemonicController implements Initializable{
+public class CheckMnemonicController extends ControllerBased implements Initializable{
 
     public AutoFillTextBox w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18;
     private List<String> mm;
@@ -124,5 +124,10 @@ public class CheckMnemonicController implements Initializable{
         w16.setData(ol);
         w17.setData(ol);
         w18.setData(ol);
+    }
+
+    @Override
+    protected void refresh() {
+
     }
 }

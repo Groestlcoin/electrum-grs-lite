@@ -4,6 +4,8 @@ import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
 import in.multico.listener.ShowListener;
+import in.multico.model.Tx;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,9 +15,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import javafx.util.Callback;
+import org.bitcoinj.core.Transaction;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -29,12 +35,18 @@ import java.util.Set;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class MainController implements Initializable{
+public class MainController extends ControllerBased implements Initializable{
 
     @FXML public ListView coinsList;
     @FXML public ImageView coinIcon;
     @FXML public Label coinAmt;
     @FXML public Label coinAddr;
+    @FXML public TableView txTable;
+    @FXML public TableColumn txTableDate;
+    @FXML public TableColumn txTableAmt;
+    @FXML public TableColumn txTableStatus;
+    @FXML public TableColumn txTableSR;
+
     private HashMap <String, WalletAccount> cIndx = new HashMap<>();
     private Set<CoinType> currCoins = new HashSet<>();
 
@@ -42,7 +54,7 @@ public class MainController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         ObservableList<String> coins = FXCollections.observableArrayList();
         for (WalletAccount acc : Main.getInstance().getAllAccounts()) {
-            String s = acc.getCoinType().getName() + " (" + acc.getBalance().toFriendlyString() + ")";
+            String s = acc.getCoinType().getName();// + " (" + acc.getBalance().toFriendlyString() + ")";
             coins.add(s);
             cIndx.put(s, acc);
             currCoins.add(acc.getCoinType());
@@ -62,6 +74,32 @@ public class MainController implements Initializable{
         coinIcon.setImage(Main.getCoinImage(wa.getCoinType()));
         coinAmt.setText(wa.getBalance().toFriendlyString());
         coinAddr.setText(wa.getReceiveAddress().toString());
+        ObservableList<Tx> ttx = FXCollections.observableArrayList();
+        for (Transaction tx : wa.getTransactions().values()) {
+            ttx.add(new Tx(tx, wa));
+        }
+        Tx.sort(ttx);
+        txTable.setItems(ttx);
+        txTableDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getDate());
+            }
+        });
+        txTableAmt.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getAmt());
+            }
+        });
+        txTableStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getConfirms());
+            }
+        });
+        txTableSR.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                return new ReadOnlyObjectWrapper(p.getValue().getSr());
+            }
+        });
     }
 
     @FXML
@@ -99,5 +137,14 @@ public class MainController implements Initializable{
     @FXML
     public void exchange(ActionEvent actionEvent) {
         Main.showMessage(Main.getLocString("soon"));
+    }
+
+    @Override
+    public void refresh() {
+        ObservableList items = coinsList.getSelectionModel().getSelectedItems();
+        if (items.size() == 1) {
+            String sel = (String) items.get(0);
+            setCoin(sel);
+        }
     }
 }

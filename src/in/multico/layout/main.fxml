@@ -113,12 +113,12 @@
                         </HBox>
                      </top>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="txTable">
                           <columns>
-                            <TableColumn prefWidth="100.0" text="%date" />
-                            <TableColumn prefWidth="100.0" text="%amt" />
-                              <TableColumn prefWidth="75.0" text="%status" />
-                              <TableColumn prefWidth="250.0" text="%sender_receiver" />
+                            <TableColumn prefWidth="140.0" text="%date" fx:id="txTableDate"/>
+                            <TableColumn prefWidth="100.0" text="%amt" fx:id="txTableAmt"/>
+                              <TableColumn prefWidth="75.0" text="%confirms" fx:id="txTableStatus"/>
+                              <TableColumn prefWidth="300.0" text="%sender_receiver" fx:id="txTableSR"/>
                           </columns>
                         </TableView>
                      </center>

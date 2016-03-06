@@ -21,7 +21,7 @@ import java.util.Set;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class AddCoinController {
+public class AddCoinController extends ControllerBased {
 
     @FXML public ListView addCoinsList;
     private HashMap<String, CoinType> cIndx = new HashMap<>();
@@ -57,4 +57,8 @@ public class AddCoinController {
                 });
     }
 
+    @Override
+    protected void refresh() {
+
+    }
 }

@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class SettingsController implements Initializable {
+public class SettingsController extends ControllerBased implements Initializable {
 
 
     @FXML public TitledPane security_page;
@@ -47,5 +47,10 @@ public class SettingsController implements Initializable {
 
     public void back(ActionEvent event) {
         Main.refreshLayout(event, "main.fxml");
+    }
+
+    @Override
+    protected void refresh() {
+
     }
 }

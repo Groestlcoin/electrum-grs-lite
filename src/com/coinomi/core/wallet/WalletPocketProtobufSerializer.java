@@ -22,41 +22,22 @@ import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.network.AddressStatus;
 import com.coinomi.core.protos.Protos;
 import com.google.protobuf.ByteString;
-
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Coin;
-import org.bitcoinj.core.PeerAddress;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
+import org.bitcoinj.core.*;
 import org.bitcoinj.core.TransactionConfidence.ConfidenceType;
-import org.bitcoinj.core.TransactionInput;
-import org.bitcoinj.core.TransactionOutPoint;
-import org.bitcoinj.core.TransactionOutput;
 import org.bitcoinj.crypto.KeyCrypter;
 import org.bitcoinj.store.UnreadableWalletException;
 import org.bitcoinj.wallet.WalletTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.ListIterator;
-import java.util.Map;
-
-import javax.annotation.Nullable;
+import java.util.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.bitcoinj.params.Networks.Family.CLAMS;
-import static org.bitcoinj.params.Networks.Family.NUBITS;
-import static org.bitcoinj.params.Networks.Family.PEERCOIN;
-import static org.bitcoinj.params.Networks.Family.REDDCOIN;
-import static org.bitcoinj.params.Networks.Family.VPNCOIN;
+import static org.bitcoinj.params.Networks.Family.*;
 import static org.bitcoinj.params.Networks.isFamily;
 
 /**

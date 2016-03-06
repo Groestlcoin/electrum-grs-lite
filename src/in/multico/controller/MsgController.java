@@ -7,7 +7,7 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class MsgController {
+public class MsgController extends ControllerBased{
 
     @FXML public Label rez;
 
@@ -20,5 +20,10 @@ public class MsgController {
         Scene scene = ((Control)event.getSource()).getScene();
         Stage stage = (Stage) scene.getWindow();
         stage.close();
+    }
+
+    @Override
+    protected void refresh() {
+
     }
 }

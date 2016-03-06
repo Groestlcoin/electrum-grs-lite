@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 05.02.16
  * Time: 09:38
  */
-public class ShowMnemonicController {
+public class ShowMnemonicController extends ControllerBased{
 
     public Label w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12, w13, w14, w15, w16, w17, w18;
     private boolean nextCheck = false;
@@ -62,5 +62,10 @@ public class ShowMnemonicController {
         w16.setText(mm.get(15));
         w17.setText(mm.get(16));
         w18.setText(mm.get(17));
+    }
+
+    @Override
+    protected void refresh() {
+
     }
 }

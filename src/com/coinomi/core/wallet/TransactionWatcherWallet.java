@@ -12,37 +12,19 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.ScriptException;
-import org.bitcoinj.core.Sha256Hash;
-import org.bitcoinj.core.Transaction;
-import org.bitcoinj.core.TransactionConfidence;
-import org.bitcoinj.core.TransactionInput;
-import org.bitcoinj.core.TransactionOutPoint;
-import org.bitcoinj.core.TransactionOutput;
-import org.bitcoinj.core.Utils;
+import org.bitcoinj.core.*;
 import org.bitcoinj.utils.ListenerRegistration;
 import org.bitcoinj.utils.Threading;
 import org.bitcoinj.wallet.WalletTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReentrantLock;
-
-import javax.annotation.Nullable;
 
 import static com.coinomi.core.Preconditions.checkNotNull;
 import static com.coinomi.core.Preconditions.checkState;
@@ -302,6 +284,8 @@ abstract public class TransactionWatcherWallet implements WalletAccount {
             simpleAddTransaction(pool, tx);
 
             markNotOwnOutputs(tx);
+            // TODO: here?
+            tx.setUpdateTime(new Date());
             connectTransaction(tx);
             queueOnNewBalance();
         } finally {

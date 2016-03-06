@@ -1,11 +1,10 @@
 package in.multico;
 
 import com.coinomi.core.coins.CoinType;
-import com.coinomi.core.wallet.Wallet;
-import com.coinomi.core.wallet.WalletAccount;
-import com.coinomi.core.wallet.WalletFiles;
-import com.coinomi.core.wallet.WalletProtobufSerializer;
+import com.coinomi.core.coins.Value;
+import com.coinomi.core.wallet.*;
 import com.google.common.collect.ImmutableList;
+import in.multico.controller.ControllerBased;
 import in.multico.controller.MsgController;
 import in.multico.listener.ShowListener;
 import javafx.application.Application;
@@ -19,6 +18,7 @@ import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.bitcoinj.core.Transaction;
 import org.bitcoinj.crypto.MnemonicCode;
 
 import javax.annotation.Nullable;
@@ -28,13 +28,14 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
-public class Main extends Application {
+public class Main extends Application implements WalletAccountEventListener {
 
     public static final String WALLET_FILE = "wallet.dat";
     private Wallet wallet;
     private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
     private static Locale locale = new Locale("en", "EN"); // Locale.getDefault();
+    private static ControllerBased controller;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -46,11 +47,17 @@ public class Main extends Application {
         } else {
             startLayout = "layout/start_select.fxml";
         }
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
+        final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
         loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
         Parent root = loader.load();
         primaryStage.setTitle("Multicoin wallet");
         primaryStage.setScene(new Scene(root));
+        primaryStage.setOnShown(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                controller = loader.getController();
+            }
+        });
         primaryStage.show();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
@@ -75,17 +82,17 @@ public class Main extends Application {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + layout));
             loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
             Parent root = loader.load();
-            if (sl != null) {
-                stage.setOnShown(new EventHandler<WindowEvent>() {
-                    @Override
-                    public void handle(WindowEvent event) {
-                        sl.onShow(loader.getController());
-                    }
-                });
-            }
             scene.setRoot(root);
             scene.getStylesheets().add(Main.class.getResource("layout/main.css").toExternalForm());
             stage.setScene(scene);
+            stage.setOnShown(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent event) {
+                    controller = loader.getController();
+                    if (sl != null) sl.onShow(controller);
+
+                }
+            });
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -150,6 +157,9 @@ public class Main extends Application {
             });
             this.wallet.saveNow();
             SyncService.getInstance(this.wallet).restart();
+            for (WalletAccount wa : wallet.getAllAccounts()) {
+                wa.addEventListener(this);
+            }
         }
     }
 
@@ -227,4 +237,37 @@ public class Main extends Application {
         }
         launch(args);
     }
+
+    @Override
+    public void onNewBalance(Value newBalance) {
+        System.out.println("onNewBalance: " + newBalance);
+        if (controller != null) controller.doRefresh();
+        else System.out.println("controller is not found!");
+    }
+
+    @Override
+    public void onNewBlock(WalletAccount pocket) {}
+
+    @Override
+    public void onTransactionConfidenceChanged(WalletAccount pocket, Transaction tx) {
+        System.out.println("onTransactionConfidenceChanged: " + tx);
+        if (controller != null) controller.doRefresh();
+        else System.out.println("controller is not found!");
+    }
+
+    @Override
+    public void onTransactionBroadcastFailure(WalletAccount pocket, Transaction tx) {}
+
+    @Override
+    public void onTransactionBroadcastSuccess(WalletAccount pocket, Transaction tx) {}
+
+    @Override
+    public void onWalletChanged(WalletAccount pocket) {
+        System.out.println("onWalletChanged: " + pocket);
+        if (controller != null) controller.doRefresh();
+        else System.out.println("controller is not found!");
+    }
+
+    @Override
+    public void onConnectivityStatus(WalletPocketConnectivity pocketConnectivity) {}
 }
