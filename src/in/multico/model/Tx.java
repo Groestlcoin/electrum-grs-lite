@@ -20,7 +20,7 @@ public class Tx {
 
     public Tx(Transaction t, WalletAccount wa) {
         this.date = new SimpleDateFormat("dd.MM.yy HH:mm:ss").format(t.getUpdateTime());
-        this.amt = t.getValueSentFromMe(wa).getValue() > 0 ? "-" + t.getValue(wa).toFriendlyString() : t.getValue(wa).toFriendlyString();
+        this.amt = t.getValue(wa).toFriendlyString();
         this.confirms = t.getConfidence().getDepthInBlocks();
         this.sr = calcSr(t, wa);
     }

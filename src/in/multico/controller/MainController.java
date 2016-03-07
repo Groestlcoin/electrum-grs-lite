@@ -49,6 +49,7 @@ public class MainController extends ControllerBased implements Initializable{
 
     private HashMap <String, WalletAccount> cIndx = new HashMap<>();
     private Set<CoinType> currCoins = new HashSet<>();
+    private WalletAccount currWa;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,13 +71,13 @@ public class MainController extends ControllerBased implements Initializable{
     }
 
     private void setCoin(String str) {
-        WalletAccount wa = cIndx.get(str);
-        coinIcon.setImage(Main.getCoinImage(wa.getCoinType()));
-        coinAmt.setText(wa.getBalance().toFriendlyString());
-        coinAddr.setText(wa.getReceiveAddress().toString());
+        currWa = cIndx.get(str);
+        coinIcon.setImage(Main.getCoinImage(currWa.getCoinType()));
+        coinAmt.setText(currWa.getBalance().toFriendlyString());
+        coinAddr.setText(currWa.getReceiveAddress().toString());
         ObservableList<Tx> ttx = FXCollections.observableArrayList();
-        for (Transaction tx : wa.getTransactions().values()) {
-            ttx.add(new Tx(tx, wa));
+        for (Transaction tx : currWa.getTransactions().values()) {
+            ttx.add(new Tx(tx, currWa));
         }
         Tx.sort(ttx);
         txTable.setItems(ttx);
@@ -100,6 +101,10 @@ public class MainController extends ControllerBased implements Initializable{
                 return new ReadOnlyObjectWrapper(p.getValue().getSr());
             }
         });
+    }
+
+    public void showResultMsg(String msg) {
+        Main.showMessage(msg);
     }
 
     @FXML
@@ -126,7 +131,12 @@ public class MainController extends ControllerBased implements Initializable{
 
     @FXML
     public void sendCoin(ActionEvent actionEvent) {
-        Main.showMessage(Main.getLocString("soon"));
+        Main.refreshLayout(actionEvent, "pay.fxml", new ShowListener() {
+            @Override
+            public void onShow(Object controller) {
+                ((PayController)controller).setCurWallet(currWa);
+            }
+        });
     }
 
     @FXML
