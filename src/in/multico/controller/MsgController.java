@@ -8,6 +8,12 @@ import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * Copyright © 2016 Marat Shmush. All rights reserved.
+ * Date: 05.02.16
+ * Time: 09:38
+ */
+
 public class MsgController extends ControllerBased{
 
     @FXML public Label rez;

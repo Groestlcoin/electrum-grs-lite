@@ -4,9 +4,9 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * Created by vp
- * on 12.03.16.
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  */
+
 public class Settings {
 
     private static final String propFile = "pref.properties";

@@ -9,6 +9,12 @@ import javafx.scene.control.Label;
 
 import java.util.List;
 
+/**
+ * Copyright © 2016 Marat Shmush. All rights reserved.
+ * Date: 05.02.16
+ * Time: 09:38
+ */
+
 public class StartSelectController extends ControllerBased{
 
     public Label rez;

@@ -19,8 +19,10 @@ import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Transaction;
 import org.bitcoinj.crypto.MnemonicCode;
+import org.bitcoinj.wallet.KeyChain;
 
 import javax.annotation.Nullable;
 import java.io.*;
@@ -28,6 +30,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
+
+/**
+ * Copyright © 2016 Marat Shmush. All rights reserved.
+ * Date: 05.02.16
+ * Time: 09:38
+ */
 
 public class Main extends Application implements WalletAccountEventListener {
 
@@ -217,6 +225,19 @@ public class Main extends Application implements WalletAccountEventListener {
         }
     }
 
+    public static String getAddr(WalletAccount wa) {
+        Address address;
+        if (Settings.getInstanse().isAlwaysRefreshAddr()) {
+            address = wa.getReceiveAddress();
+        } else {
+            address = ((WalletPocketHD) wa).getLastUsedAddress(KeyChain.KeyPurpose.RECEIVE_FUNDS);
+            if (address == null) {
+                address = wa.getReceiveAddress();
+            }
+        }
+        if (address != null) return address.toString();
+        else return "";
+    }
 
     public List<WalletAccount> getAccounts(List<CoinType> types) {
         if (wallet != null) {

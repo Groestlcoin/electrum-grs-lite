@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="in.multico.controller.InvoiceController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <top>
+        <Label text="%scan_qr_to_pay" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+   <center>
+      <VBox spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="qr" fitHeight="360.0" fitWidth="360.0" pickOnBounds="true" preserveRatio="true" />
+            <Label text="%receive_addr" />
+            <ComboBox fx:id="addr" prefWidth="360.0" />
+            <Label text="%amt_optional" />
+            <HBox spacing="20" alignment="BASELINE_LEFT">
+                  <TextField fx:id="amt" text="0.0" prefWidth="250" BorderPane.alignment="CENTER" />
+                  <Label fx:id="coinSymbol" text="BTC" BorderPane.alignment="CENTER" />
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <bottom>
+      <Button mnemonicParsing="false" text="%back" onAction="#back" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

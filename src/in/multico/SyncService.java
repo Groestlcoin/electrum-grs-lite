@@ -11,8 +11,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vp
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  * Date: 06.02.16
  * Time: 08:24
  */

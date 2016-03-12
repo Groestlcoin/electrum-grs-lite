@@ -9,8 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * Created by vp
- * on 06.03.16.
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  */
 public class Tx {
     private String date;

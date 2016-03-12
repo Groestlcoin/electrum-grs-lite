@@ -5,8 +5,7 @@ import org.bitcoinj.wallet.WalletFiles;
 import java.io.File;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vp
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  * Date: 05.02.16
  * Time: 07:23
  */

@@ -3,7 +3,7 @@ package in.multico.controller;
 import javafx.application.Platform;
 
 /**
- * Created by vp
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  * on 06.03.16.
  */
 public abstract class ControllerBased {

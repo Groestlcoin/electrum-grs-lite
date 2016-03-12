@@ -16,8 +16,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vp
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  * Date: 05.02.16
  * Time: 09:38
  */

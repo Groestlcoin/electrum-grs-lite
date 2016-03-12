@@ -104,6 +104,10 @@
   <path id="library.slf4j-simple-1.7.14.classpath">
     <pathelement location="${basedir}/lib/slf4j-simple-1.7.14.jar"/>
   </path>
+
+  <path id="library.zxing-2.1.classpath">
+    <pathelement location="${basedir}/lib/zxing-2.1.jar"/>
+  </path>
   
   <!-- Modules -->
   
@@ -136,6 +140,7 @@
     <path refid="library.okhttp-2.7.2.classpath"/>
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
+    <path refid="library.zxing-2.1.classpath"/>
   </path>
   
   <path id="multicoin.runtime.production.module.classpath">
@@ -152,6 +157,7 @@
     <path refid="library.okhttp-2.7.2.classpath"/>
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
+    <path refid="library.zxing-2.1.classpath"/>
   </path>
   
   <path id="multicoin.module.classpath">
@@ -168,6 +174,7 @@
     <path refid="library.okhttp-2.7.2.classpath"/>
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
+    <path refid="library.zxing-2.1.classpath"/>
   </path>
   
   <path id="multicoin.runtime.module.classpath">
@@ -185,6 +192,7 @@
     <path refid="library.okhttp-2.7.2.classpath"/>
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
+    <path refid="library.zxing-2.1.classpath"/>
   </path>
   
   
@@ -262,6 +270,7 @@
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/okhttp-2.7.2.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/slf4j-simple-1.7.14.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/protobuf-java-2.6.1.jar"/>
+      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/zxing-2.1.jar"/>
       <manifest>
         <attribute name="Main-Class" value="in.multico.Main"/>
       </manifest>

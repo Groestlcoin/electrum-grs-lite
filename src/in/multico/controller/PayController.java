@@ -14,8 +14,7 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.crypto.KeyCrypter;
 
 /**
- * Created with IntelliJ IDEA.
- * User: vp
+ * Copyright © 2016 Marat Shmush. All rights reserved.
  * Date: 05.02.16
  * Time: 09:38
  */

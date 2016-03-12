@@ -23,7 +23,16 @@ With mnemonic code you can restore your wallet when you lost wallet.dat file or 
 Your contributions are very welcome, be it translations, extra features or new coins support. Just
 fork this repo and create a pull request with your changes.
 
+## Features
 
-## Attention!
+With the Multicoin Wallet you can store, send and receive multiple types of cryptocurrency using only one wallet application.
 
-This software is not stable now. Do NOT USE it for real money.
+ - HD enabled - manage multiple accounts and never reuse addresses ([Bip32](https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)/[Bip44](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki) compatible)
+ - Masterseed based - make one backup for multiple coins in your wallet and be safe for ever. ([Bip39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki))
+ - 100% control over your private keys, they never leave your device unless you export them
+ - No block chain download - install and run in seconds
+ - Secure your wallet with a password
+ - Compatible with other bitcoin services through the `bitcoin:` URI scheme
+ 
+Please note that cryptocurrency is still experimental and this app comes with no warranty - I can not exclude that the software contains bugs. Please make sure you have backups of your wallet.dat file and seed. 
+Do not use this for more than you are willing to lose.
