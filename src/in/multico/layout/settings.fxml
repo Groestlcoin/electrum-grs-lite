@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane prefHeight="310.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.multico.controller.SettingsController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -16,12 +18,12 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="180.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Button mnemonicParsing="false" text="%show_mnemonic" onAction="#showMnemonic">
+                              <Button mnemonicParsing="false" onAction="#showMnemonic" text="%show_mnemonic">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="%change_pass" onAction="#changePass">
+                              <Button mnemonicParsing="false" onAction="#changePass" text="%change_pass">
                                  <VBox.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </VBox.margin>
@@ -44,7 +46,8 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                            <children>
-                              <CheckBox mnemonicParsing="false" text="%spend_uncomfirmed" onAction="#togleSpendUnconfirmed"/>
+                              <CheckBox fx:id="spendUnconfirm" disable="true" mnemonicParsing="false" onAction="#togleSpendUnconfirmed" text="%spend_uncomfirmed" />
+                              <CheckBox fx:id="refreshAddr" mnemonicParsing="false" onAction="#togleRefreshAddr" text="%refresh_addr" />
                            </children>
                         </VBox>
                      </children>
@@ -60,7 +63,7 @@
       </Accordion>
    </center>
    <bottom>
-      <Button mnemonicParsing="false" text="%back" onAction="#back" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#back" text="%back" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="20.0" />
          </BorderPane.margin>

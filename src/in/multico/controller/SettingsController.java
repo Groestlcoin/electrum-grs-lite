@@ -1,11 +1,13 @@
 package in.multico.controller;
 
 import in.multico.Main;
+import in.multico.Settings;
 import in.multico.listener.ShowListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TitledPane;
 
 import java.net.URL;
@@ -22,10 +24,16 @@ public class SettingsController extends ControllerBased implements Initializable
 
     @FXML public TitledPane security_page;
     @FXML public Accordion acrd;
+    @FXML public CheckBox spendUnconfirm;
+    @FXML public CheckBox refreshAddr;
+    private Settings settings;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        settings = Settings.getInstanse();
         acrd.setExpandedPane(security_page);
+        spendUnconfirm.setSelected(settings.isAllowSpendUnconfirmed());
+        refreshAddr.setSelected(settings.isAlwaysRefreshAddr());
     }
 
     public void showMnemonic(ActionEvent event) {
@@ -47,7 +55,7 @@ public class SettingsController extends ControllerBased implements Initializable
     }
 
     public void togleSpendUnconfirmed(ActionEvent event) {
-        Main.showMessage(Main.getLocString("soon"));
+        settings.setAllowSpendUnconfirmed(spendUnconfirm.isSelected());
     }
 
     public void back(ActionEvent event) {
@@ -57,5 +65,9 @@ public class SettingsController extends ControllerBased implements Initializable
     @Override
     protected void refresh() {
 
+    }
+
+    public void togleRefreshAddr(ActionEvent event) {
+        settings.setAlwaysRefreshAddr(refreshAddr.isSelected());
     }
 }

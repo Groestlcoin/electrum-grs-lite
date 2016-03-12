@@ -2,7 +2,9 @@ package in.multico.controller;
 
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.wallet.WalletAccount;
+import com.coinomi.core.wallet.WalletPocketHD;
 import in.multico.Main;
+import in.multico.Settings;
 import in.multico.listener.ShowListener;
 import in.multico.model.Tx;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -21,7 +23,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.util.Callback;
+import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.wallet.KeyChain;
 
 import java.net.URL;
 import java.util.HashMap;
@@ -70,11 +74,25 @@ public class MainController extends ControllerBased implements Initializable{
         coinsList.getSelectionModel().selectFirst();
     }
 
+    private String getAddr() {
+        Address address;
+        if (Settings.getInstanse().isAlwaysRefreshAddr()) {
+            address = currWa.getReceiveAddress();
+        } else {
+            address = ((WalletPocketHD) currWa).getLastUsedAddress(KeyChain.KeyPurpose.RECEIVE_FUNDS);
+            if (address == null) {
+                address = currWa.getReceiveAddress();
+            }
+        }
+        if (address != null) return address.toString();
+        else return "";
+    }
+
     private void setCoin(String str) {
         currWa = cIndx.get(str);
         coinIcon.setImage(Main.getCoinImage(currWa.getCoinType()));
         coinAmt.setText(currWa.getBalance().toFriendlyString());
-        coinAddr.setText(currWa.getReceiveAddress().toString());
+        coinAddr.setText(getAddr());
         ObservableList<Tx> ttx = FXCollections.observableArrayList();
         for (Transaction tx : currWa.getTransactions().values()) {
             ttx.add(new Tx(tx, currWa));
