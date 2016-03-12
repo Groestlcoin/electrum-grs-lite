@@ -21,10 +21,11 @@
         <ListView fx:id="addCoinsList"/>
     </center>
     <bottom>
-        <HBox alignment="BOTTOM_RIGHT">
+        <HBox alignment="CENTER" spacing="40">
             <padding>
-                <Insets top="25" bottom="25" right="25"/>
+                <Insets left="20" top="20" bottom="20" right="20"/>
             </padding>
+            <Button text="%back" onAction="#back" />
             <Button text="%add" onAction="#add" />
         </HBox>
     </bottom>

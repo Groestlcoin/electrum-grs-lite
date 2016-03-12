@@ -77,24 +77,24 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
     public void setMnemonic(List<String> mm) {
         this.mm = mm;
        // TODO: stub
-        w1.getTextbox().setText(mm.get(0));
-        w2.getTextbox().setText(mm.get(1));
-        w3.getTextbox().setText(mm.get(2));
-        w4.getTextbox().setText(mm.get(3));
-        w5.getTextbox().setText(mm.get(4));
-        w6.getTextbox().setText(mm.get(5));
-        w7.getTextbox().setText(mm.get(6));
-        w8.getTextbox().setText(mm.get(7));
-        w9.getTextbox().setText(mm.get(8));
-        w10.getTextbox().setText(mm.get(9));
-        w11.getTextbox().setText(mm.get(10));
-        w12.getTextbox().setText(mm.get(11));
-        w13.getTextbox().setText(mm.get(12));
-        w14.getTextbox().setText(mm.get(13));
-        w15.getTextbox().setText(mm.get(14));
-        w16.getTextbox().setText(mm.get(15));
-        w17.getTextbox().setText(mm.get(16));
-        w18.getTextbox().setText(mm.get(17));
+//        w1.getTextbox().setText(mm.get(0));
+//        w2.getTextbox().setText(mm.get(1));
+//        w3.getTextbox().setText(mm.get(2));
+//        w4.getTextbox().setText(mm.get(3));
+//        w5.getTextbox().setText(mm.get(4));
+//        w6.getTextbox().setText(mm.get(5));
+//        w7.getTextbox().setText(mm.get(6));
+//        w8.getTextbox().setText(mm.get(7));
+//        w9.getTextbox().setText(mm.get(8));
+//        w10.getTextbox().setText(mm.get(9));
+//        w11.getTextbox().setText(mm.get(10));
+//        w12.getTextbox().setText(mm.get(11));
+//        w13.getTextbox().setText(mm.get(12));
+//        w14.getTextbox().setText(mm.get(13));
+//        w15.getTextbox().setText(mm.get(14));
+//        w16.getTextbox().setText(mm.get(15));
+//        w17.getTextbox().setText(mm.get(16));
+//        w18.getTextbox().setText(mm.get(17));
     }
 
     private void showErr() {

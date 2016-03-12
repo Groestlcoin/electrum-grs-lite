@@ -60,4 +60,8 @@ public class AddCoinController extends ControllerBased {
     protected void refresh() {
 
     }
+
+    public void back(ActionEvent event) {
+        Main.refreshLayout(event, "main.fxml");
+    }
 }

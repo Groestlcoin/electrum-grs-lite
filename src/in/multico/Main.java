@@ -43,7 +43,7 @@ public class Main extends Application implements WalletAccountEventListener {
     private Wallet wallet;
     private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
-    private static Locale locale = new Locale("en", "EN"); // Locale.getDefault();
+    private static Locale locale = Locale.getDefault(); // new Locale("en", "EN");
     private static ControllerBased controller;
 
     @Override
@@ -143,13 +143,7 @@ public class Main extends Application implements WalletAccountEventListener {
 
     public static String getLocString(String key) {
         ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", locale);
-        String s = bundle.getString(key);
-        try {
-            return new String(s.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return s;
-        }
+        return bundle.getString(key);
     }
 
     public void setWallet(@Nullable Wallet wallet) {
