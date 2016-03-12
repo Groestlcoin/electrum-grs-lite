@@ -48,29 +48,29 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
             if (!mm.get(17).equals(w18.getText())) showErr();
         } else {
             mm = new ArrayList<>();
-            mm.set(0, w1.getText());
-            mm.set(0, w2.getText());
-            mm.set(0, w3.getText());
-            mm.set(0, w4.getText());
-            mm.set(0, w5.getText());
-            mm.set(0, w6.getText());
-            mm.set(0, w7.getText());
-            mm.set(0, w8.getText());
-            mm.set(0, w9.getText());
-            mm.set(0, w10.getText());
-            mm.set(0, w11.getText());
-            mm.set(0, w12.getText());
-            mm.set(0, w13.getText());
-            mm.set(0, w14.getText());
-            mm.set(0, w15.getText());
-            mm.set(0, w16.getText());
-            mm.set(0, w17.getText());
-            mm.set(0, w18.getText());
+            mm.add(w1.getText());
+            mm.add(w2.getText());
+            mm.add(w3.getText());
+            mm.add(w4.getText());
+            mm.add(w5.getText());
+            mm.add(w6.getText());
+            mm.add(w7.getText());
+            mm.add(w8.getText());
+            mm.add(w9.getText());
+            mm.add(w10.getText());
+            mm.add(w11.getText());
+            mm.add(w12.getText());
+            mm.add(w13.getText());
+            mm.add(w14.getText());
+            mm.add(w15.getText());
+            mm.add(w16.getText());
+            mm.add(w17.getText());
+            mm.add(w18.getText());
         }
         Main.refreshLayout(event, "set_password.fxml", new ShowListener() {
             @Override
             public void onShow(Object controller) {
-                ((SetPasswordController)controller).setMnemonic(mm);
+                ((SetPasswordController)controller).setMnemonic(mm, null);
             }
         });
     }

@@ -2,6 +2,7 @@ package in.multico.controller;
 
 import com.coinomi.core.coins.BitcoinMain;
 import com.coinomi.core.wallet.Wallet;
+import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ public class SetPasswordController extends ControllerBased{
 
     public TextField pass, repass;
     private List<String> mm;
+    private List<WalletAccount> waList;
 
     @FXML
     private void next(ActionEvent event) {
@@ -31,7 +33,14 @@ public class SetPasswordController extends ControllerBased{
             KeyCrypterScrypt crypter = new KeyCrypterScrypt();
             KeyParameter aesKey = crypter.deriveKey(pass.getText());
             wallet.encrypt(crypter, aesKey);
-            wallet.createAccount(BitcoinMain.get(), false, aesKey);
+            if (waList == null) {
+                wallet.createAccount(BitcoinMain.get(), false, aesKey);
+            } else {
+                for (WalletAccount wa : waList) {
+                    wa.encrypt(crypter, aesKey);
+                    wallet.addAccount(wa);
+                }
+            }
             Main.getInstance().setWallet(wallet);
             Main.refreshLayout(event, "main.fxml");
         } catch (Exception e) {
@@ -40,8 +49,9 @@ public class SetPasswordController extends ControllerBased{
         }
     }
 
-    public void setMnemonic(List<String> mm) {
+    public void setMnemonic(List<String> mm, List<WalletAccount> waList) {
         this.mm = mm;
+        this.waList = waList;
     }
 
     @Override

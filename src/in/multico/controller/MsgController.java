@@ -1,5 +1,6 @@
 package in.multico.controller;
 
+import in.multico.listener.CloseListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -14,12 +15,18 @@ public class MsgController extends ControllerBased{
     public void setMsg(String msg){
         rez.setText(msg);
     }
+    private CloseListener cl;
 
     @FXML
     private void close(ActionEvent event) {
+        if (cl != null) cl.onClose();
         Scene scene = ((Control)event.getSource()).getScene();
         Stage stage = (Stage) scene.getWindow();
         stage.close();
+    }
+
+    public void setCloseListener(CloseListener cl) {
+        this.cl = cl;
     }
 
     @Override

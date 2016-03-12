@@ -6,6 +6,7 @@ import com.coinomi.core.wallet.*;
 import com.google.common.collect.ImmutableList;
 import in.multico.controller.ControllerBased;
 import in.multico.controller.MsgController;
+import in.multico.listener.CloseListener;
 import in.multico.listener.ShowListener;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -108,6 +109,10 @@ public class Main extends Application implements WalletAccountEventListener {
     }
 
     public static void showMessage(final String msg) {
+        showMessage(msg, null);
+    }
+
+    public static void showMessage(final String msg, final CloseListener cl) {
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/msg.fxml"));
             loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
@@ -117,7 +122,9 @@ public class Main extends Application implements WalletAccountEventListener {
             stage.setOnShown(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
-                    ((MsgController)loader.getController()).setMsg(msg);
+                    MsgController mc = loader.getController();
+                    mc.setMsg(msg);
+                    if (cl != null) mc.setCloseListener(cl);
                 }
             });
             stage.showAndWait();
@@ -174,7 +181,15 @@ public class Main extends Application implements WalletAccountEventListener {
                 System.out.println("wallet loaded from: '" + walletFile + "', took " + (System.currentTimeMillis() - start) + "ms");
             } catch (Exception e) {
                 e.printStackTrace();
-                showMessage("Ошибка загрузки файла кошелька: " + e.getMessage());
+                showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
+                    @Override
+                    public void onClose() {
+                        System.out.println("Begin close...");
+                        SyncService.getInstance(wallet).stopAll();
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                });
             } finally {
                 if (walletStream != null) {
                     try {

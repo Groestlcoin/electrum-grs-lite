@@ -103,10 +103,6 @@ public class MainController extends ControllerBased implements Initializable{
         });
     }
 
-    public void showResultMsg(String msg) {
-        Main.showMessage(msg);
-    }
-
     @FXML
     public void addNewCoin(ActionEvent event) {
         Main.refreshLayout(event, "add_coin.fxml", new ShowListener() {

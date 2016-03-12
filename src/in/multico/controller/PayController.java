@@ -4,7 +4,7 @@ import com.coinomi.core.wallet.SendRequest;
 import com.coinomi.core.wallet.WalletAccount;
 import com.coinomi.core.wallet.WalletPocketHD;
 import in.multico.Main;
-import in.multico.listener.ShowListener;
+import in.multico.listener.CloseListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -44,7 +44,7 @@ public class PayController extends ControllerBased {
         Main.refreshLayout(event, "main.fxml");
     }
 
-    public void send(ActionEvent event) {
+    public void send(final ActionEvent event) {
         String address = addr.getText();
         try {
             Address a = wa.getCoinType().address(address);
@@ -61,10 +61,10 @@ public class PayController extends ControllerBased {
             if (!wph.broadcastTxSync(request.tx)) {
                 throw new Exception("Error broadcasting transaction: " + request.tx.getHashAsString());
             }
-            Main.refreshLayout(event, "main.fxml", new ShowListener() {
+            Main.showMessage(Main.getLocString("coins_sent"), new CloseListener() {
                 @Override
-                public void onShow(Object controller) {
-                    ((MainController)controller).showResultMsg(Main.getLocString("coins_sent"));
+                public void onClose() {
+                    Main.refreshLayout(event, "main.fxml");
                 }
             });
         } catch (Exception e) {

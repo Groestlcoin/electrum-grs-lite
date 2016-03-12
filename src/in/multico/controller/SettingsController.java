@@ -38,7 +38,12 @@ public class SettingsController extends ControllerBased implements Initializable
     }
 
     public void changePass(ActionEvent event) {
-        Main.showMessage(Main.getLocString("soon"));
+        Main.refreshLayout(event, "check_password.fxml", new ShowListener() {
+            @Override
+            public void onShow(Object controller) {
+                ((CheckPasswordController) controller).setNextChangePass();
+            }
+        });
     }
 
     public void togleSpendUnconfirmed(ActionEvent event) {
