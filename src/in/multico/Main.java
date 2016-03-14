@@ -43,7 +43,6 @@ public class Main extends Application implements WalletAccountEventListener {
     private Wallet wallet;
     private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
-    private static Locale locale = Locale.getDefault(); // new Locale("en", "EN");
     private static ControllerBased controller;
 
     @Override
@@ -57,7 +56,7 @@ public class Main extends Application implements WalletAccountEventListener {
             startLayout = "layout/start_select.fxml";
         }
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
-        loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
+        loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
         Parent root = loader.load();
         primaryStage.setTitle("Multicoin wallet");
         primaryStage.setScene(new Scene(root));
@@ -89,7 +88,7 @@ public class Main extends Application implements WalletAccountEventListener {
         stage.close();
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + layout));
-            loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
             Parent root = loader.load();
             scene.setRoot(root);
             scene.getStylesheets().add(Main.class.getResource("layout/main.css").toExternalForm());
@@ -123,7 +122,7 @@ public class Main extends Application implements WalletAccountEventListener {
     public static void showMessage(final String msg, final CloseListener cl) {
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/msg.fxml"));
-            loader.setResources(ResourceBundle.getBundle("bundles.strings", locale));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
             Parent root = loader.load();
             final Stage stage = new Stage();
             stage.setScene(new Scene(root, 400, 200));
@@ -141,8 +140,23 @@ public class Main extends Application implements WalletAccountEventListener {
         }
     }
 
+    private static Locale getLocale() {
+        Locale loc = Locale.getDefault();
+        System.out.println("system locale: " + loc);
+        if (loc.getLanguage().equals("ru")) {
+            return loc;
+        }
+        return new Locale("en", "EN");
+    }
+
+    public static boolean isWindows() {
+        String s = System.getProperty("os.name");
+        s = s.toLowerCase();
+        return s.contains("win");
+    }
+
     public static String getLocString(String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", getLocale());
         return bundle.getString(key);
     }
 
