@@ -3,6 +3,7 @@ package in.multico.controller;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
+import in.multico.connector.Coincap;
 import in.multico.listener.ShowListener;
 import in.multico.model.Tx;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -45,6 +46,7 @@ public class MainController extends ControllerBased implements Initializable{
     @FXML public TableColumn txTableAmt;
     @FXML public TableColumn txTableStatus;
     @FXML public TableColumn txTableSR;
+    @FXML public TableColumn txTableAmtUSD;
 
     private HashMap <String, WalletAccount> cIndx = new HashMap<>();
     private Set<CoinType> currCoins = new HashSet<>();
@@ -71,13 +73,30 @@ public class MainController extends ControllerBased implements Initializable{
 
     private void setCoin(String str) {
         currWa = cIndx.get(str);
+        Coincap.getPrice(currWa.getCoinType().getSymbol(), new Coincap.PriceListener() {
+            @Override
+            public void onPrice(double price) {
+                ObservableList<Tx> ttx2 = FXCollections.observableArrayList();
+                for (Transaction tx : currWa.getTransactions().values()) {
+                    Tx t = new Tx(tx, currWa);
+                    t.setUsdAmt(price);
+                    ttx2.add(t);
+                }
+                fillTxTable(ttx2);
+            }
+        });
         coinIcon.setImage(Main.getCoinImage(currWa.getCoinType()));
         coinAmt.setText(currWa.getBalance().toFriendlyString());
         coinAddr.setText(Main.getAddr(currWa));
         ObservableList<Tx> ttx = FXCollections.observableArrayList();
         for (Transaction tx : currWa.getTransactions().values()) {
-            ttx.add(new Tx(tx, currWa));
+            Tx t = new Tx(tx, currWa);
+            ttx.add(t);
         }
+        fillTxTable(ttx);
+    }
+
+    private void fillTxTable(ObservableList<Tx> ttx) {
         Tx.sort(ttx);
         txTable.setItems(ttx);
         txTableDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
@@ -88,6 +107,12 @@ public class MainController extends ControllerBased implements Initializable{
         txTableAmt.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
                 return new ReadOnlyObjectWrapper(p.getValue().getAmt());
+            }
+        });
+        txTableAmtUSD.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                String usdAmt = p.getValue().getUsdAmt();
+                return new ReadOnlyObjectWrapper(usdAmt);
             }
         });
         txTableStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {

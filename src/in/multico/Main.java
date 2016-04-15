@@ -189,12 +189,13 @@ public class Main extends Application implements WalletAccountEventListener {
     private void loadWallet() {
         File walletFile = new File(WALLET_FILE);
         if (walletFile.exists()) {
+
             final long start = System.currentTimeMillis();
             FileInputStream walletStream = null;
             try {
                 walletStream = new FileInputStream(walletFile);
                 setWallet(WalletProtobufSerializer.readWallet(walletStream));
-                System.out.println("wallet loaded from: '" + walletFile + "', took " + (System.currentTimeMillis() - start) + "ms");
+                System.out.println("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
             } catch (Exception e) {
                 e.printStackTrace();
                 showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {

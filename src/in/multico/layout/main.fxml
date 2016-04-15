@@ -115,8 +115,9 @@
                      <center>
                         <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="txTable">
                           <columns>
-                            <TableColumn prefWidth="140.0" text="%date" fx:id="txTableDate"/>
-                            <TableColumn prefWidth="130.0" text="%amt" fx:id="txTableAmt"/>
+                              <TableColumn prefWidth="140.0" text="%date" fx:id="txTableDate"/>
+                              <TableColumn prefWidth="130.0" text="%amt" fx:id="txTableAmt"/>
+                              <TableColumn prefWidth="90.0" text="USD" fx:id="txTableAmtUSD"/>
                               <TableColumn prefWidth="75.0" text="%confirms" fx:id="txTableStatus"/>
                               <TableColumn prefWidth="300.0" text="%sender_receiver" fx:id="txTableSR"/>
                           </columns>

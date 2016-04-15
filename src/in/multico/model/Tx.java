@@ -5,6 +5,7 @@ import org.bitcoinj.core.*;
 import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.params.TestNet3Params;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -14,6 +15,7 @@ import java.util.*;
 public class Tx {
     private String date;
     private String amt;
+    private String usdAmt = "0.0";
     private int confirms;
     private String sr;
 
@@ -38,6 +40,19 @@ public class Tx {
 
     public String getSr() {
         return sr;
+    }
+
+    public String getUsdAmt() {
+        return usdAmt;
+    }
+
+    public void setUsdAmt(double price) {
+        try {
+            double damt = Double.parseDouble(amt.split(" ")[0]);
+            usdAmt = new BigDecimal(damt * price).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+        } catch (Exception ne) {
+            usdAmt = "0.0";
+        }
     }
 
     private String calcSr(Transaction t, WalletAccount wa) {

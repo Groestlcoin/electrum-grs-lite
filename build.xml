@@ -108,7 +108,23 @@
   <path id="library.zxing-2.1.classpath">
     <pathelement location="${basedir}/lib/zxing-2.1.jar"/>
   </path>
-  
+
+  <path id="appbundler-1.0.classpath">
+  <pathelement location="${basedir}/lib/appbundler-1.0.jar"/>
+  </path>
+
+  <path id="library.commons-logging-1.2.classpath">
+    <pathelement location="${basedir}/lib/commons-logging-1.2.jar"/>
+  </path>
+
+  <path id="library.httpclient-4.5.2.classpath">
+    <pathelement location="${basedir}/lib/httpclient-4.5.2.jar"/>
+  </path>
+
+  <path id="library.httpcore-4.4.4.classpath">
+    <pathelement location="${basedir}/lib/httpcore-4.4.4.jar"/>
+  </path>
+
   <!-- Modules -->
   
   
@@ -116,13 +132,16 @@
   
   <dirname property="module.multicoin.basedir" file="${ant.file}"/>
   
-  
-  
   <property name="compiler.args.multicoin" value="-encoding UTF-8 -source 1.7 -target 1.7 ${compiler.args}"/>
   
   <property name="multicoin.output.dir" value="${module.multicoin.basedir}/out/production/multicoin"/>
   <property name="multicoin.testoutput.dir" value="${module.multicoin.basedir}/out/test/multicoin"/>
-  
+  <property name="multicoin.macos.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac"/>
+
+  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask">
+    <classpath refid="appbundler-1.0.classpath"/>
+  </taskdef>
+
   <path id="multicoin.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
   </path>
@@ -141,6 +160,9 @@
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
+    <path refid="library.commons-logging-1.2.classpath"/>
+    <path refid="library.httpclient-4.5.2.classpath"/>
+    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.runtime.production.module.classpath">
@@ -158,6 +180,9 @@
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
+    <path refid="library.commons-logging-1.2.classpath"/>
+    <path refid="library.httpclient-4.5.2.classpath"/>
+    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.module.classpath">
@@ -175,6 +200,9 @@
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
+    <path refid="library.commons-logging-1.2.classpath"/>
+    <path refid="library.httpclient-4.5.2.classpath"/>
+    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.runtime.module.classpath">
@@ -193,6 +221,9 @@
     <path refid="library.okio-1.6.0.classpath"/>
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
+    <path refid="library.commons-logging-1.2.classpath"/>
+    <path refid="library.httpclient-4.5.2.classpath"/>
+    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   
@@ -271,6 +302,9 @@
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/slf4j-simple-1.7.14.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/protobuf-java-2.6.1.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/zxing-2.1.jar"/>
+      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/commons-logging-1.2.jar"/>
+      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/httpclient-4.5.2.jar"/>
+      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/httpcore-4.4.4.jar"/>
       <manifest>
         <attribute name="Main-Class" value="in.multico.Main"/>
       </manifest>
@@ -283,10 +317,34 @@
     <copy todir="${artifact.output.multicoin:jar}">
       <fileset dir="${artifact.temp.output.multicoin:jar}"/>
     </copy>
-    
+
     <!-- Delete temporary files -->
     <delete dir="${artifacts.temp.dir}"/>
   </target>
-  
+
+  <target name="bundle-mac" depends="build.modules, build.all.artifacts">
+    <mkdir dir="${multicoin.macos.app.dir}"/>
+    <bundleapp outputdirectory="${multicoin.macos.app.dir}"
+               name="Multicoin"
+               icon="icon.png"
+               displayname="Multicoin"
+               identifier="in.multico.Main"
+               shortversion="0.2"
+               applicationCategory="public.app-category.finance"
+               mainclassname="in.multico.Main">
+      <runtime dir="${path.java}"/>
+      <classpath file="${artifact.output.multicoin:jar}/multicoin.jar"/>
+      <option value="-Dapple.laf.useScreenMenuBar=true"/>
+    </bundleapp>
+    <echo message="try to fix resolution..."/>
+    <replaceregexp byline="true">
+      <regexp pattern="&lt;/dict&gt;"/>
+      <substitution expression="&lt;key&gt;NSHighResolutionCapable&lt;/key&gt;${line.separator}&lt;true/&gt;${line.separator}&lt;/dict&gt;"/>
+      <fileset dir="${multicoin.macos.app.dir}/Multicoin.app/Contents">
+        <include name="Info.plist"/>
+      </fileset>
+    </replaceregexp>
+  </target>
+
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
 </project>
