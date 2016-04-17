@@ -36,9 +36,9 @@ public class Coincap {
         try {
             HttpGet get = new HttpGet(req);
             HttpResponse resp = client.execute(get);
-            System.out.println("-~->" + req);
+//            System.out.println("-~->" + req);
             String s = EntityUtils.toString(resp.getEntity());
-            System.out.println("<-~-" + s);
+//            System.out.println("<-~-" + s);
             return s;
         } finally {
             client.close();

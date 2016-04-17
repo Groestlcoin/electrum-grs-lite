@@ -2,9 +2,9 @@ package in.multico.model;
 
 import com.coinomi.core.wallet.WalletAccount;
 import org.bitcoinj.core.*;
-import org.bitcoinj.params.MainNetParams;
-import org.bitcoinj.params.TestNet3Params;
 
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -56,25 +56,25 @@ public class Tx {
     }
 
     private String calcSr(Transaction t, WalletAccount wa) {
-        NetworkParameters np = wa.getCoinType().isTestnet() ? TestNet3Params.get() : MainNetParams.get();
         Set<String> oppo = new HashSet<>();
-        if (t.getValueSentToMe(wa).getValue() > 0) {
-            for (TransactionInput in : t.getInputs()) {
-                oppo.add(in.getFromAddress().toString());
-            }
-        } else {
-            for (TransactionOutput out : t.getOutputs()) {
-                Address fromP2PKHScript = out.getAddressFromP2PKHScript(np);
-                if (fromP2PKHScript != null) {
-                    oppo.add(fromP2PKHScript.toString());
-                }
-                Address fromP2SH = out.getAddressFromP2SH(np);
-                if (fromP2SH != null) {
-                    oppo.add(fromP2SH.toString());
-                }
-            }
+        final Coin value = t.getValue(wa);
+        for (Address a : getAddresses(t, wa, value.signum() >= 0)) {
+            oppo.add(a.toString());
         }
         return oppo.toString();
+    }
+
+    @CheckForNull
+    public static List<Address> getAddresses(@Nonnull final Transaction tx, @Nonnull final WalletAccount pocket, boolean toMe) {
+        List<Address> addresses = new ArrayList<Address>();
+        for (final TransactionOutput output : tx.getOutputs()) {
+            try {
+                if (output.isMine(pocket) == toMe) {
+                    addresses.add(output.getScriptPubKey().getToAddress(pocket.getCoinType()));
+                }
+            } catch (final ScriptException x) { /* ignore this output */ }
+        }
+        return addresses;
     }
 
     public static void sort(List<Tx> txes) {
