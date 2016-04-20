@@ -3,6 +3,7 @@ package in.multico.controller;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
+import in.multico.Settings;
 import in.multico.connector.Coincap;
 import in.multico.listener.ShowListener;
 import in.multico.model.Tx;
@@ -129,7 +130,7 @@ public class MainController extends ControllerBased implements Initializable{
 
     @FXML
     public void addNewCoin(ActionEvent event) {
-        Main.refreshLayout(event, "add_coin.fxml", new ShowListener() {
+        Main.refreshLayout(event, new AddCoinController().getLayout(), new ShowListener() {
             @Override
             public void onShow(Object controller) {
                 ((AddCoinController) controller).setCurrCoinsList(currCoins);
@@ -146,12 +147,12 @@ public class MainController extends ControllerBased implements Initializable{
 
     @FXML
     public void settings(ActionEvent event) {
-        Main.refreshLayout(event, "settings.fxml");
+        Main.refreshLayout(event, new SettingsController().getLayout());
     }
 
     @FXML
     public void sendCoin(ActionEvent actionEvent) {
-        Main.refreshLayout(actionEvent, "pay.fxml", new ShowListener() {
+        Main.refreshLayout(actionEvent, new PayController().getLayout(), new ShowListener() {
             @Override
             public void onShow(Object controller) {
                 ((PayController)controller).setCurWallet(currWa);
@@ -161,7 +162,7 @@ public class MainController extends ControllerBased implements Initializable{
 
     @FXML
     public void invoice(ActionEvent event) {
-        Main.refreshLayout(event, "invoice.fxml", new ShowListener() {
+        Main.refreshLayout(event, new InvoiceController().getLayout(), new ShowListener() {
             @Override
             public void onShow(Object controller) {
                 ((InvoiceController)controller).setCurrWa(currWa);
@@ -170,8 +171,17 @@ public class MainController extends ControllerBased implements Initializable{
     }
 
     @FXML
-    public void exchange(ActionEvent actionEvent) {
-        Main.showMessage(Main.getLocString("soon"));
+    public void exchange(ActionEvent event) {
+        if (Settings.getInstanse().getPoloKey() == null) {
+            Main.refreshLayout(event, new AddExchangeController().getLayout());
+        } else {
+            Main.refreshLayout(event, new ExchangeController().getLayout());
+        }
+    }
+
+    @Override
+    public String getLayout() {
+        return "main.fxml";
     }
 
     @Override

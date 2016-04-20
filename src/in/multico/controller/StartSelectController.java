@@ -19,12 +19,11 @@ public class StartSelectController extends ControllerBased{
 
     public Label rez;
 
-
     public static final int SEED_ENTROPY_DEFAULT = 192;
 
     @FXML
     private void createWallet(ActionEvent event) {
-        Main.refreshLayout(event, "show_mnemonic.fxml", new ShowListener() {
+        Main.refreshLayout(event, new ShowMnemonicController().getLayout(), new ShowListener() {
             @Override
             public void onShow(Object controller) {
                 List<String> mm = Wallet.generateMnemonic(SEED_ENTROPY_DEFAULT);
@@ -37,7 +36,12 @@ public class StartSelectController extends ControllerBased{
 
     @FXML
     private void importWallet(ActionEvent event) {
-        Main.refreshLayout(event, "check_mnemonic.fxml");
+        Main.refreshLayout(event, new CheckMnemonicController().getLayout());
+    }
+
+    @Override
+    public String getLayout() {
+        return "start_select.fxml";
     }
 
     @Override

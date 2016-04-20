@@ -45,6 +45,11 @@ public class CoinSelectController extends ControllerBased implements Initializab
     }
 
     @Override
+    public String getLayout() {
+        return "coin_select.fxml";
+    }
+
+    @Override
     protected void refresh() {
 
     }

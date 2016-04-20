@@ -29,14 +29,14 @@ public class AddCoinController extends ControllerBased {
     @FXML
     private void add(ActionEvent event) {
         if (selCoin != null) {
-            Main.refreshLayout(event, "check_password.fxml", new ShowListener() {
+            Main.refreshLayout(event, new CheckPasswordController().getLayout(), new ShowListener() {
                 @Override
                 public void onShow(Object controller) {
                     ((CheckPasswordController) controller).setAppendedCoin(selCoin);
                 }
             });
         } else {
-            Main.refreshLayout(event, "main.fxml");
+            Main.refreshLayout(event, new MainController().getLayout());
         }
     }
 
@@ -57,11 +57,16 @@ public class AddCoinController extends ControllerBased {
     }
 
     @Override
+    public String getLayout() {
+        return "add_coin.fxml";
+    }
+
+    @Override
     protected void refresh() {
 
     }
 
     public void back(ActionEvent event) {
-        Main.refreshLayout(event, "main.fxml");
+        Main.refreshLayout(event, new MainController().getLayout());
     }
 }

@@ -110,7 +110,7 @@
   </path>
 
   <path id="appbundler-1.0.classpath">
-  <pathelement location="${basedir}/lib/appbundler-1.0.jar"/>
+    <pathelement location="${basedir}/lib/appbundler-1.0.jar"/>
   </path>
 
   <path id="library.commons-logging-1.2.classpath">
@@ -138,7 +138,7 @@
   <property name="multicoin.testoutput.dir" value="${module.multicoin.basedir}/out/test/multicoin"/>
   <property name="multicoin.macos.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac"/>
 
-  <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask">
+  <taskdef name="bundleapp-mac" classname="com.oracle.appbundler.AppBundlerTask">
     <classpath refid="appbundler-1.0.classpath"/>
   </taskdef>
 
@@ -324,9 +324,9 @@
 
   <target name="bundle-mac" depends="build.modules, build.all.artifacts">
     <mkdir dir="${multicoin.macos.app.dir}"/>
-    <bundleapp outputdirectory="${multicoin.macos.app.dir}"
+    <bundleapp-mac outputdirectory="${multicoin.macos.app.dir}"
                name="Multicoin"
-               icon="icon.png"
+               icon="icon.icns"
                displayname="Multicoin"
                identifier="in.multico.Main"
                shortversion="0.2"
@@ -335,7 +335,7 @@
       <runtime dir="${path.java}"/>
       <classpath file="${artifact.output.multicoin:jar}/multicoin.jar"/>
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
-    </bundleapp>
+    </bundleapp-mac>
     <echo message="try to fix resolution..."/>
     <replaceregexp byline="true">
       <regexp pattern="&lt;/dict&gt;"/>

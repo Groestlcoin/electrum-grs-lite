@@ -26,14 +26,14 @@ public class ShowMnemonicController extends ControllerBased{
     @FXML
     private void next(ActionEvent event) {
         if (nextCheck) {
-            Main.refreshLayout(event, "check_mnemonic.fxml", new ShowListener() {
+            Main.refreshLayout(event, new CheckMnemonicController().getLayout(), new ShowListener() {
                 @Override
                 public void onShow(Object controller) {
                     ((CheckMnemonicController)controller).setMnemonic(mm);
                 }
             });
         } else {
-            Main.refreshLayout(event, "main.fxml");
+            Main.refreshLayout(event, new MainController().getLayout());
         }
     }
 
@@ -61,6 +61,11 @@ public class ShowMnemonicController extends ControllerBased{
         w16.setText(mm.get(15));
         w17.setText(mm.get(16));
         w18.setText(mm.get(17));
+    }
+
+    @Override
+    public String getLayout() {
+        return "show_mnemonic.fxml";
     }
 
     @Override

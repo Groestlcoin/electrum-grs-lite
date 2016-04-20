@@ -17,5 +17,7 @@ public abstract class ControllerBased {
         });
     }
 
+    public abstract String getLayout();
+
     protected abstract void refresh();
 }

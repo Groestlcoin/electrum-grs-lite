@@ -37,12 +37,17 @@ public class InvoiceController extends ControllerBased {
     private String currCoin;
 
     @Override
+    public String getLayout() {
+        return "invoice.fxml";
+    }
+
+    @Override
     protected void refresh() {
 
     }
 
     public void back(ActionEvent event) {
-        Main.refreshLayout(event, "main.fxml");
+        Main.refreshLayout(event, new MainController().getLayout());
     }
 
     private void repaintQR() {

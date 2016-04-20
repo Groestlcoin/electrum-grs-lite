@@ -6,6 +6,7 @@ import com.coinomi.core.wallet.*;
 import com.google.common.collect.ImmutableList;
 import in.multico.controller.ControllerBased;
 import in.multico.controller.MsgController;
+import in.multico.controller.StartSelectController;
 import in.multico.listener.CloseListener;
 import in.multico.listener.ShowListener;
 import javafx.application.Application;
@@ -53,7 +54,7 @@ public class Main extends Application implements WalletAccountEventListener {
             startLayout = "layout/main.fxml";
             loadWallet();
         } else {
-            startLayout = "layout/start_select.fxml";
+            startLayout = "layout/" + new StartSelectController().getLayout();
         }
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
         loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
@@ -121,7 +122,7 @@ public class Main extends Application implements WalletAccountEventListener {
 
     public static void showMessage(final String msg, final CloseListener cl) {
         try {
-            final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/msg.fxml"));
+            final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + new MsgController().getLayout()));
             loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
             Parent root = loader.load();
             final Stage stage = new Stage();

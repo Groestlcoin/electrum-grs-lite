@@ -41,7 +41,7 @@ public class SetPasswordController extends ControllerBased{
                 }
             }
             Main.getInstance().setWallet(wallet);
-            Main.refreshLayout(event, "main.fxml");
+            Main.refreshLayout(event, new MainController().getLayout());
         } catch (Exception e) {
             e.printStackTrace();
             Main.showMessage(Main.getLocString("err_wallet_create") + ": " + e.getMessage());
@@ -51,6 +51,11 @@ public class SetPasswordController extends ControllerBased{
     public void setMnemonic(List<String> mm, List<WalletAccount> waList) {
         this.mm = mm;
         this.waList = waList;
+    }
+
+    @Override
+    public String getLayout() {
+        return "set_password.fxml";
     }
 
     @Override

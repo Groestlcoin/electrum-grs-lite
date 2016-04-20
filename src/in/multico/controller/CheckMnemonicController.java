@@ -68,7 +68,7 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
                 mm.add(w17.getText());
                 mm.add(w18.getText());
             }
-            Main.refreshLayout(event, "set_password.fxml", new ShowListener() {
+            Main.refreshLayout(event, new SetPasswordController().getLayout(), new ShowListener() {
                 @Override
                 public void onShow(Object controller) {
                     ((SetPasswordController) controller).setMnemonic(mm, null);
@@ -106,7 +106,7 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
         Main.showMessage(Main.getLocString("err_data"), new CloseListener() {
             @Override
             public void onClose() {
-                Main.refreshLayout(event, "show_mnemonic.fxml", new ShowListener() {
+                Main.refreshLayout(event, new ShowMnemonicController().getLayout(), new ShowListener() {
                     @Override
                     public void onShow(Object controller) {
                         ShowMnemonicController c = (ShowMnemonicController) controller;
@@ -143,6 +143,11 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
             w17.setData(ol);
             w18.setData(ol);
         }
+    }
+
+    @Override
+    public String getLayout() {
+        return "check_mnemonic.fxml";
     }
 
     @Override

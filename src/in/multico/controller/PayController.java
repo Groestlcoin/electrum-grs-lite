@@ -20,13 +20,17 @@ import org.bitcoinj.crypto.KeyCrypter;
  */
 public class PayController extends ControllerBased {
 
-
     @FXML public Label ava;
     @FXML public Label ccy;
     @FXML public TextField amt;
     @FXML public TextField addr;
     @FXML public TextField pass;
     private WalletAccount wa;
+
+    @Override
+    public String getLayout() {
+        return "pay.fxml";
+    }
 
     @Override
     protected void refresh() {
@@ -40,7 +44,7 @@ public class PayController extends ControllerBased {
     }
 
     public void back(ActionEvent event) {
-        Main.refreshLayout(event, "main.fxml");
+        Main.refreshLayout(event, new MainController().getLayout());
     }
 
     public void send(final ActionEvent event) {
@@ -63,7 +67,7 @@ public class PayController extends ControllerBased {
             Main.showMessage(Main.getLocString("coins_sent"), new CloseListener() {
                 @Override
                 public void onClose() {
-                    Main.refreshLayout(event, "main.fxml");
+                    Main.refreshLayout(event, new MainController().getLayout());
                 }
             });
         } catch (Exception e) {

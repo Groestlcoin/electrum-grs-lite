@@ -36,6 +36,11 @@ public class MsgController extends ControllerBased{
     }
 
     @Override
+    public String getLayout() {
+        return "msg.fxml";
+    }
+
+    @Override
     protected void refresh() {
 
     }

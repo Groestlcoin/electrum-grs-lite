@@ -28,12 +28,17 @@ public class CheckPasswordController extends ControllerBased{
     private CoinType addCoin;
 
     @Override
+    public String getLayout() {
+        return "check_password.fxml";
+    }
+
+    @Override
     protected void refresh() {
 
     }
 
     public void cancel(ActionEvent event) {
-        Main.refreshLayout(event, "main.fxml");
+        Main.refreshLayout(event, new MainController().getLayout());
     }
 
     public enum Next {addCoin, showMnemonic, changePass}
@@ -46,7 +51,7 @@ public class CheckPasswordController extends ControllerBased{
             Wallet wallet = Main.getInstance().getWallet();
             KeyCrypter crypter = wallet.getKeyCrypter();
             if (crypter == null) {
-                Main.refreshLayout(event, "main.fxml");
+                Main.refreshLayout(event, new MainController().getLayout());
                 return;
             }
             KeyParameter key = crypter.deriveKey(password);
@@ -55,17 +60,17 @@ public class CheckPasswordController extends ControllerBased{
                 if (addCoin != null) {
                     wallet.createAccount(addCoin, false, key);
                     Main.getInstance().setWallet(wallet);
-                    Main.refreshLayout(event, "main.fxml");
+                    Main.refreshLayout(event, new MainController().getLayout());
                 }
             }
             else if (Next.showMnemonic.equals(nextStep)) {
                 DeterministicSeed seed = wallet.getSeed();
                 if (seed == null) {
-                    Main.refreshLayout(event, "main.fxml");
+                    Main.refreshLayout(event, new MainController().getLayout());
                     return;
                 }
                 final DeterministicSeed dSeed = seed.decrypt(crypter, null, key);
-                Main.refreshLayout(event, "show_mnemonic.fxml", new ShowListener() {
+                Main.refreshLayout(event, new ShowMnemonicController().getLayout(), new ShowListener() {
                     @Override
                     public void onShow(Object controller) {
                         ((ShowMnemonicController) controller).setMnemonic(dSeed.getMnemonicCode());
@@ -75,7 +80,7 @@ public class CheckPasswordController extends ControllerBased{
             else if (Next.changePass.equals(nextStep)) {
                 DeterministicSeed seed = wallet.getSeed();
                 if (seed == null) {
-                    Main.refreshLayout(event, "main.fxml");
+                    Main.refreshLayout(event, new MainController().getLayout());
                     return;
                 }
                 final DeterministicSeed dSeed = seed.decrypt(crypter, null, key);
@@ -84,7 +89,7 @@ public class CheckPasswordController extends ControllerBased{
                     wa.decrypt(key);
                     waList.add(wa);
                 }
-                Main.refreshLayout(event, "set_password.fxml", new ShowListener() {
+                Main.refreshLayout(event, new SetPasswordController().getLayout(), new ShowListener() {
                     @Override
                     public void onShow(Object controller) {
                         ((SetPasswordController)controller).setMnemonic(dSeed.getMnemonicCode(), waList);
