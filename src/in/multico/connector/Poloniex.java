@@ -4,29 +4,28 @@ import org.json.JSONObject;
 
 /**
  * Copyright © 2016 Marat Shmush. All rights reserved.
+ * Date: 05.02.16
+ * Time: 09:38
  */
+public class Poloniex extends ConnectorBased {
 
-public class Coincap extends ConnectorBased {
-
-    public static final String URL = "http://coincap.io/page/";
-
-    public static void getPrice(final String coin, final PriceListener pl) {
+    public static void getTicker(final RespListener pl) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String s = get(URL + coin);
+                    String s = get("https://poloniex.com/public?command=returnTicker");
                     JSONObject jo = new JSONObject(s);
-                    pl.onPrice(jo.getDouble("usdPrice"));
+                    pl.onResp(jo);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    pl.onPrice(0.0);
+                    pl.onResp(new JSONObject());
                 }
             }
         }).start();
     }
 
-    public interface PriceListener {
-        void onPrice(double price);
+    public interface RespListener {
+        void onResp(JSONObject ticker);
     }
 }

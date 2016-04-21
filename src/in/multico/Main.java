@@ -110,6 +110,7 @@ public class Main extends Application implements WalletAccountEventListener {
 
     public static Image getCoinImage(CoinType coin) {
         String name = coin.getName();
+        if (name.contains("beta")) name = name.split(" ")[0];
         name = name.replaceAll(" ", "_");
         name = name.toLowerCase();
         InputStream stream = Main.class.getResourceAsStream("icons/" + name + ".png");

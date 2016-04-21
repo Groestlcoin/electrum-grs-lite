@@ -34,7 +34,7 @@ public class Settings {
 
     public void setPoloSecret(String poloSecret, String pass) {
         // TODO: encrypt
-        props.put(PROP_POLO_KEY, poloSecret);
+        props.put(PROP_POLO_SECRET, poloSecret);
         save();
     }
 
