@@ -108,7 +108,7 @@ public class InvoiceController extends ControllerBased {
                     val = Double.parseDouble(newValue);
                 } catch (Exception ignored) {}
                 if (val > 0) {
-                    currAmt = String.valueOf(val);
+                    currAmt = newValue;
                 } else {
                     currAmt = null;
                 }
