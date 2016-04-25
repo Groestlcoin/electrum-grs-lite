@@ -27,11 +27,39 @@
                               <Insets left="5.0" right="5.0" />
                           </padding>
                       </Label>
-                      <Label fx:id="coinAddr" text="1NDBbxL6jrF8fEjsCP36baNiQGJ2C3rcJE">
+                  <Label fx:id="eqvAmt" text="(0.0 USD)">
+                     <padding>
+                        <Insets left="5.0" right="5.0" />
+                     </padding>
+                  </Label>
+                      <Label fx:id="coinAddr" prefWidth="160.0" text="1NDBbxL6jrF8fEjsCP36baNiQGJ2C3rcJE" textOverrun="CENTER_ELLIPSIS">
                           <padding>
-                              <Insets left="5.0" right="5.0" />
+                              <Insets left="10.0" right="5.0" />
                           </padding>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
                       </Label>
+                  </children>
+              </HBox>
+          </left>
+          <right>
+              <HBox alignment="CENTER_LEFT" prefHeight="60.0" BorderPane.alignment="CENTER">
+                  <padding>
+                      <Insets left="10.0" right="10.0" />
+                  </padding>
+              <children>
+                  <Button onAction="#settings" text="%settings">
+                      <HBox.margin>
+                          <Insets left="5.0" right="5.0" />
+                      </HBox.margin>
+                  </Button>
+              </children>
+              </HBox>
+          </right>
+         <center>
+            <HBox alignment="CENTER" prefWidth="600.0" BorderPane.alignment="CENTER">
+               <children>
                       <Button mnemonicParsing="false" onAction="#copyAddr" text="%copy">
                           <HBox.margin>
                               <Insets left="5.0" right="5.0" />
@@ -52,27 +80,27 @@
                               <Insets left="5.0" right="5.0" />
                           </HBox.margin>
                       </Button>
-                  </children>
-              </HBox>
-          </left>
-          <right>
-              <HBox alignment="CENTER_LEFT" prefHeight="60.0" BorderPane.alignment="CENTER">
-                  <padding>
-                      <Insets left="10.0" right="10.0" />
-                  </padding>
-              <children>
-                  <Button onAction="#settings" text="%settings">
-                      <HBox.margin>
-                          <Insets left="5.0" right="5.0" />
-                      </HBox.margin>
-                  </Button>
-              </children>
-              </HBox>
-          </right>
+               </children>
+            </HBox>
+         </center>
       </BorderPane>
    </top>
    <bottom>
-      <HBox prefHeight="41.0" BorderPane.alignment="CENTER" />
+      <HBox alignment="CENTER_LEFT" prefHeight="41.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="%total_amt" />
+            <Label fx:id="totalAmt" text="0.0 USD">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding></HBox>
    </bottom>
    <center>
         <SplitPane dividerPositions="0.2" nodeOrientation="LEFT_TO_RIGHT" prefHeight="206.0" prefWidth="600.0">
@@ -113,13 +141,13 @@
                         </HBox>
                      </top>
                      <center>
-                        <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" fx:id="txTable">
+                        <TableView fx:id="txTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                           <columns>
-                              <TableColumn prefWidth="140.0" text="%date" fx:id="txTableDate"/>
-                              <TableColumn prefWidth="130.0" text="%amt" fx:id="txTableAmt"/>
-                              <TableColumn prefWidth="90.0" text="USD" fx:id="txTableAmtUSD"/>
-                              <TableColumn prefWidth="75.0" text="%confirms" fx:id="txTableStatus"/>
-                              <TableColumn prefWidth="300.0" text="%sender_receiver" fx:id="txTableSR"/>
+                              <TableColumn fx:id="txTableDate" prefWidth="140.0" text="%date" />
+                              <TableColumn fx:id="txTableAmt" prefWidth="130.0" text="%amt" />
+                              <TableColumn fx:id="txTableAmtUSD" prefWidth="90.0" text="USD" />
+                              <TableColumn fx:id="txTableStatus" prefWidth="75.0" text="%confirms" />
+                              <TableColumn fx:id="txTableSR" prefWidth="350.0" text="%sender_receiver" />
                           </columns>
                         </TableView>
                      </center>

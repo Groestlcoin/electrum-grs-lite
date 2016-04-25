@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-<BorderPane prefHeight="520.0" prefWidth="624.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="in.multico.controller.ExchangeController">
+<BorderPane prefHeight="520.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.multico.controller.ExchangeController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -21,7 +21,7 @@
         </HBox>
     </bottom>
    <top>
-      <Label text="Обмен монет" BorderPane.alignment="CENTER">
+      <Label text="%exchange" BorderPane.alignment="CENTER">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
@@ -33,7 +33,7 @@
    <left>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Продаем:">
+            <Label text="%give">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -45,7 +45,7 @@
    <right>
       <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Покупаем:">
+            <Label text="%get">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
@@ -60,9 +60,9 @@
             <Insets left="10.0" right="10.0" />
          </BorderPane.margin>
          <children>
-            <Label text="Доступно:" />
+            <Label text="%ava" />
             <Label fx:id="ava" text="0.0 BTC" />
-            <Label text="Отдаем:">
+            <Label text="%give">
                <VBox.margin>
                   <Insets bottom="5.0" top="10.0" />
                </VBox.margin>
@@ -72,10 +72,10 @@
             </Label>
             <BorderPane>
                <left>
-                  <TextField alignment="CENTER" fx:id="selAmt" promptText="0.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="giveAmt" alignment="CENTER" promptText="1.0" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Label fx:id="selCcy" text="BTC" BorderPane.alignment="CENTER">
+                  <Label fx:id="giveCcy" text="BTC" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="5.0" />
                      </BorderPane.margin>
@@ -85,7 +85,7 @@
                   <Insets />
                </VBox.margin>
             </BorderPane>
-            <Label text="Получаем:">
+            <Label text="%get">
                <VBox.margin>
                   <Insets bottom="5.0" top="10.0" />
                </VBox.margin>
@@ -95,33 +95,32 @@
             </Label>
             <BorderPane>
                <left>
-                  <TextField alignment="CENTER" fx:id="buyAmt" promptText="0.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="getAmt" alignment="CENTER" promptText="0.0" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Label fx:id="buyCcy" text="BTC" BorderPane.alignment="CENTER">
+                  <Label fx:id="getCcy" text="BTC" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="5.0" />
                      </BorderPane.margin>
                   </Label>
                </right>
             </BorderPane>
-            <Label text="Цена:">
+            <Label text="%password">
                <VBox.margin>
-                  <Insets bottom="5.0" top="10.0" />
+                  <Insets bottom="5.0" top="30.0" />
                </VBox.margin>
             </Label>
-            <TextField alignment="CENTER" fx:id="price" />
-            <CheckBox fx:id="delay" mnemonicParsing="false" text="Отложить если цена хуже">
+            <PasswordField fx:id="pass" alignment="CENTER" promptText="%hint_pass" />
+            <Label text="%ex_shapeshift" textAlignment="CENTER" wrapText="true">
                <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </CheckBox>
-            <Label text="Пароль:">
-               <VBox.margin>
-                  <Insets bottom="5.0" top="10.0" />
+                  <Insets bottom="20.0" top="20.0" />
                </VBox.margin>
             </Label>
-            <PasswordField fx:id="pass" promptText="%hint_pass" />
+            <ProgressBar visible="false" fx:id="progress">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </ProgressBar>
          </children>
       </VBox>
    </center>

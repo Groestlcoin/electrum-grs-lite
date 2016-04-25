@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TitledPane;
 
@@ -25,9 +24,6 @@ public class SettingsController extends ControllerBased implements Initializable
     @FXML public Accordion acrd;
     @FXML public CheckBox spendUnconfirm;
     @FXML public CheckBox refreshAddr;
-    @FXML public Button exKeysAdd;
-    @FXML public Button exKeysEdit;
-    @FXML public Button exKeysDel;
     private Settings settings;
 
     @Override
@@ -36,15 +32,6 @@ public class SettingsController extends ControllerBased implements Initializable
         acrd.setExpandedPane(security_page);
         spendUnconfirm.setSelected(settings.isAllowSpendUnconfirmed());
         refreshAddr.setSelected(settings.isAlwaysRefreshAddr());
-        if (settings.getPoloKey() != null) {
-            exKeysAdd.setVisible(false);
-            exKeysDel.setVisible(true);
-            exKeysEdit.setVisible(true);
-        } else {
-            exKeysAdd.setVisible(true);
-            exKeysDel.setVisible(false);
-            exKeysEdit.setVisible(false);
-        }
     }
 
     public void showMnemonic(ActionEvent event) {
@@ -87,18 +74,4 @@ public class SettingsController extends ControllerBased implements Initializable
         settings.setAlwaysRefreshAddr(refreshAddr.isSelected());
     }
 
-    public void addExKeys(ActionEvent event) {
-        Main.refreshLayout(event, new AddExchangeController().getLayout());
-    }
-
-    public void editExKeys(ActionEvent event) {
-        // TODO:
-    }
-
-    public void deleteExKeys(ActionEvent event) {
-        settings.deletePoloKey();
-        exKeysAdd.setVisible(true);
-        exKeysDel.setVisible(false);
-        exKeysEdit.setVisible(false);
-    }
 }

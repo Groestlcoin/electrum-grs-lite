@@ -170,6 +170,7 @@ public class StratumClient extends AbstractExecutionThreadService {
         while (isRunning() && isConnected()) {
             try {
                 serverMessage = fromServer.readLine();
+                log.info("From server: {}", serverMessage);
             } catch (IOException e) {
                 if (isRunning()) {
                     log.info("Error communicating with server: {}", e.getMessage());
@@ -251,7 +252,7 @@ public class StratumClient extends AbstractExecutionThreadService {
         SettableFuture<ResultMessage> future = SettableFuture.create();
 
         message.setId(idCounter.getAndIncrement());
-
+        log.info("To server: {}", message.toString());
         try {
             toServer.writeBytes(message.toString());
             callers.put(message.getId(), future);

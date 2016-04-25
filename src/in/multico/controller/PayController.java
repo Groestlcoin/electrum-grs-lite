@@ -5,9 +5,11 @@ import com.coinomi.core.wallet.WalletAccount;
 import com.coinomi.core.wallet.WalletPocketHD;
 import in.multico.Main;
 import in.multico.listener.CloseListener;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import org.bitcoinj.core.Address;
 import org.bitcoinj.core.Coin;
@@ -25,6 +27,7 @@ public class PayController extends ControllerBased {
     @FXML public TextField amt;
     @FXML public TextField addr;
     @FXML public TextField pass;
+    @FXML public ProgressBar progress;
     private WalletAccount wa;
 
     @Override
@@ -48,31 +51,49 @@ public class PayController extends ControllerBased {
     }
 
     public void send(final ActionEvent event) {
-        String address = addr.getText();
-        try {
-            Address a = wa.getCoinType().address(address);
-            String sum = amt.getText();
-            if (sum.isEmpty()) throw new Exception("empty amt");
-            Coin coin = Coin.parseCoin(sum);
-            WalletPocketHD wph = (WalletPocketHD) wa;
-            SendRequest request = SendRequest.to(a, coin);
-            KeyCrypter crypter = wph.getKeyCrypter();
-            if (crypter == null) throw new Exception("empty crypter");
-            request.aesKey = crypter.deriveKey(pass.getText());
-            request.signInputs = true;
-            wph.completeAndSignTx(request);
-            if (!wph.broadcastTxSync(request.tx)) {
-                throw new Exception("Error broadcasting transaction: " + request.tx.getHashAsString());
-            }
-            Main.showMessage(Main.getLocString("coins_sent"), new CloseListener() {
-                @Override
-                public void onClose() {
-                    Main.refreshLayout(event, new MainController().getLayout());
+        progress.setVisible(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String address = addr.getText();
+                boolean success = false;
+                try {
+                    Address a = wa.getCoinType().address(address);
+                    String sum = amt.getText();
+                    if (sum.isEmpty()) throw new Exception("empty amt");
+                    Coin coin = Coin.parseCoin(sum);
+                    WalletPocketHD wph = (WalletPocketHD) wa;
+                    SendRequest request = SendRequest.to(a, coin);
+                    KeyCrypter crypter = wph.getKeyCrypter();
+                    if (crypter == null) throw new Exception("empty crypter");
+                    request.aesKey = crypter.deriveKey(pass.getText());
+                    request.signInputs = true;
+                    wph.completeAndSignTx(request);
+                    if (!wph.broadcastTxSync(request.tx)) {
+                        throw new Exception("Error broadcasting transaction: " + request.tx.getHashAsString());
+                    }
+                    success = true;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-            Main.showMessage(Main.getLocString("err_data"));
-        }
+                final boolean finalSuccess = success;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        progress.setVisible(false);
+                        if (finalSuccess) {
+                            Main.showMessage(Main.getLocString("coins_sent"), new CloseListener() {
+                                @Override
+                                public void onClose() {
+                                    Main.refreshLayout(event, new MainController().getLayout());
+                                }
+                            });
+                        } else {
+                            Main.showMessage(Main.getLocString("err_data"));
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 }

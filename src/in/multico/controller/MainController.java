@@ -3,33 +3,30 @@ package in.multico.controller;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
-import in.multico.Settings;
 import in.multico.connector.Coincap;
 import in.multico.listener.ShowListener;
 import in.multico.model.Tx;
+import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.util.Callback;
 import org.bitcoinj.core.Transaction;
 
+import java.math.BigDecimal;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Copyright © 2016 Marat Shmush. All rights reserved.
@@ -48,6 +45,8 @@ public class MainController extends ControllerBased implements Initializable{
     @FXML public TableColumn txTableStatus;
     @FXML public TableColumn txTableSR;
     @FXML public TableColumn txTableAmtUSD;
+    @FXML public Label eqvAmt;
+    @FXML public Label totalAmt;
 
     private HashMap <String, WalletAccount> cIndx = new HashMap<>();
     private Set<CoinType> currCoins = new HashSet<>();
@@ -74,16 +73,51 @@ public class MainController extends ControllerBased implements Initializable{
 
     private void setCoin(String str) {
         currWa = cIndx.get(str);
-        Coincap.getPrice(currWa.getCoinType().getSymbol(), new Coincap.PriceListener() {
+        List<String> coins = new ArrayList<>();
+        final List<WalletAccount> allAccounts = Main.getInstance().getAllAccounts();
+        for (WalletAccount wa : allAccounts) {
+            if (wa.getCoinType().isTestnet()) continue;
+            coins.add(wa.getCoinType().getSymbol());
+        }
+        Coincap.getInstance().getPrices(coins, new Coincap.PricesListener() {
             @Override
-            public void onPrice(double price) {
-                ObservableList<Tx> ttx2 = FXCollections.observableArrayList();
-                for (Transaction tx : currWa.getTransactions().values()) {
-                    Tx t = new Tx(tx, currWa);
-                    t.setUsdAmt(price);
-                    ttx2.add(t);
+            public void onPrice(Map<String, Double> prices) {
+                double all = 0.0;
+                for (String coin : prices.keySet()) {
+                    for (WalletAccount wa : allAccounts) {
+                        if (wa.getCoinType().getSymbol().equals(coin)) {
+                            all += wa.getBalance().getValue() / wa.getCoinType().oneCoin().getValue() * prices.get(coin);
+                            break;
+                        }
+                    }
+                    if (currWa.getCoinType().getSymbol().equals(coin)) {
+                        double price = prices.get(coin);
+                        ObservableList<Tx> ttx2 = FXCollections.observableArrayList();
+                        long value = currWa.getBalance().getValue();
+                        long one = currWa.getCoinType().oneCoin().getValue();
+                        final double eqv = value / one * price;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                String eq = new BigDecimal(eqv).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+                                eqvAmt.setText("(" + eq + " USD)");
+                            }
+                        });
+                        for (Transaction tx : currWa.getTransactions().values()) {
+                            Tx t = new Tx(tx, currWa);
+                            t.setUsdAmt(price);
+                            ttx2.add(t);
+                        }
+                        fillTxTable(ttx2);
+                    }
                 }
-                fillTxTable(ttx2);
+                final double finalAll = all;
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        totalAmt.setText(new BigDecimal(finalAll).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + " USD");
+                    }
+                });
             }
         });
         coinIcon.setImage(Main.getCoinImage(currWa.getCoinType()));
@@ -97,33 +131,53 @@ public class MainController extends ControllerBased implements Initializable{
         fillTxTable(ttx);
     }
 
-    private void fillTxTable(ObservableList<Tx> ttx) {
+    private void fillTxTable(final ObservableList<Tx> ttx) {
         Tx.sort(ttx);
-        txTable.setItems(ttx);
-        txTableDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getDate());
-            }
-        });
-        txTableAmt.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getAmt());
-            }
-        });
-        txTableAmtUSD.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
-                String usdAmt = p.getValue().getUsdAmt();
-                return new ReadOnlyObjectWrapper(usdAmt);
-            }
-        });
-        txTableStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getConfirms());
-            }
-        });
-        txTableSR.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
-                return new ReadOnlyObjectWrapper(p.getValue().getSr());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                txTable.setItems(ttx);
+                txTableDate.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue().getDate());
+                    }
+                });
+                txTableAmt.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue().getAmt());
+                    }
+                });
+                txTableAmtUSD.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                        String usdAmt = p.getValue().getUsdAmt();
+                        return new ReadOnlyObjectWrapper(usdAmt);
+                    }
+                });
+                txTableStatus.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue().getConfirms());
+                    }
+                });
+                txTableSR.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tx, String>, ObservableValue<String>>() {
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<Tx, String> p) {
+                        return new ReadOnlyObjectWrapper(p.getValue().getSr());
+                    }
+                });
+
+                final ContextMenu tableContextMenu = new ContextMenu();
+                final MenuItem copy = new MenuItem("Copy address");
+                copy.disableProperty().bind(Bindings.isEmpty(txTable.getSelectionModel().getSelectedItems()));
+                copy.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Tx selected = (Tx) txTable.getSelectionModel().getSelectedItem();
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString(selected.getSr());
+                        Clipboard.getSystemClipboard().setContent(content);
+                    }
+                });
+                tableContextMenu.getItems().add(copy);
+                txTable.setContextMenu(tableContextMenu);
             }
         });
     }
@@ -172,11 +226,7 @@ public class MainController extends ControllerBased implements Initializable{
 
     @FXML
     public void exchange(ActionEvent event) {
-        if (Settings.getInstanse().getPoloKey() == null) {
-            Main.refreshLayout(event, new AddExchangeController().getLayout());
-        } else {
-            Main.refreshLayout(event, new ExchangeController().getLayout());
-        }
+        Main.refreshLayout(event, new ExchangeController().getLayout());
     }
 
     @Override

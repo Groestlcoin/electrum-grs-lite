@@ -296,7 +296,9 @@ public class ShapeShift extends Connection {
 
     private JSONObject getMakeApiCall(Request request) throws ShapeShiftException, IOException {
         try {
+            System.out.println("~~> " + request);
             Response response = client.newCall(request).execute();
+            System.out.println("<~~ " + response);
             if (!response.isSuccessful()) {
                 JSONObject reply = parseReply(response);
                 String genericMessage = "Error code " + response.code();

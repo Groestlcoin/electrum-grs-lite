@@ -117,14 +117,6 @@
     <pathelement location="${basedir}/lib/commons-logging-1.2.jar"/>
   </path>
 
-  <path id="library.httpclient-4.5.2.classpath">
-    <pathelement location="${basedir}/lib/httpclient-4.5.2.jar"/>
-  </path>
-
-  <path id="library.httpcore-4.4.4.classpath">
-    <pathelement location="${basedir}/lib/httpcore-4.4.4.jar"/>
-  </path>
-
   <!-- Modules -->
   
   
@@ -161,8 +153,6 @@
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
     <path refid="library.commons-logging-1.2.classpath"/>
-    <path refid="library.httpclient-4.5.2.classpath"/>
-    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.runtime.production.module.classpath">
@@ -181,8 +171,6 @@
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
     <path refid="library.commons-logging-1.2.classpath"/>
-    <path refid="library.httpclient-4.5.2.classpath"/>
-    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.module.classpath">
@@ -201,8 +189,6 @@
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
     <path refid="library.commons-logging-1.2.classpath"/>
-    <path refid="library.httpclient-4.5.2.classpath"/>
-    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   <path id="multicoin.runtime.module.classpath">
@@ -222,8 +208,6 @@
     <path refid="library.scrypt-1.4.0.classpath"/>
     <path refid="library.zxing-2.1.classpath"/>
     <path refid="library.commons-logging-1.2.classpath"/>
-    <path refid="library.httpclient-4.5.2.classpath"/>
-    <path refid="library.httpcore-4.4.4.classpath"/>
   </path>
   
   
@@ -303,8 +287,6 @@
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/protobuf-java-2.6.1.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/zxing-2.1.jar"/>
       <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/commons-logging-1.2.jar"/>
-      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/httpclient-4.5.2.jar"/>
-      <zipfileset excludes="META-INF/**/*" src="${basedir}/lib/httpcore-4.4.4.jar"/>
       <manifest>
         <attribute name="Main-Class" value="in.multico.Main"/>
       </manifest>

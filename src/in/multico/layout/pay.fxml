@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
 <BorderPane prefHeight="248.0" prefWidth="363.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="in.multico.controller.PayController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -37,6 +39,9 @@
             </content>
           </TitledPane>
         </panes>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
       </Accordion>
    </center>
    <top>
@@ -47,7 +52,7 @@
                   <Label text="%amt" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <TextField prefHeight="27.0" prefWidth="203.0" fx:id="amt" text="0.001" BorderPane.alignment="CENTER">
+                  <TextField fx:id="amt" prefHeight="27.0" prefWidth="203.0" text="0.001" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="10.0" right="10.0" />
                      </BorderPane.margin></TextField>
@@ -69,7 +74,7 @@
                   <Label text="%address" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <TextField prefHeight="27.0" prefWidth="246.0" fx:id="addr" BorderPane.alignment="CENTER">
+                  <TextField fx:id="addr" prefHeight="27.0" prefWidth="246.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="10.0" />
                      </BorderPane.margin></TextField>
@@ -80,7 +85,7 @@
                   <Label text="%hint_pass" BorderPane.alignment="CENTER" />
                </left>
                <center>
-                  <PasswordField prefHeight="27.0" prefWidth="240.0" fx:id="pass" BorderPane.alignment="CENTER">
+                  <PasswordField fx:id="pass" prefHeight="27.0" prefWidth="240.0" BorderPane.alignment="CENTER">
                      <BorderPane.margin>
                         <Insets left="10.0" />
                      </BorderPane.margin></PasswordField>
@@ -90,17 +95,29 @@
       </VBox>
    </top>
    <bottom>
-      <BorderPane prefWidth="200.0" BorderPane.alignment="CENTER">
-         <left>
-            <Button mnemonicParsing="false" onAction="#back" text="%cancel" BorderPane.alignment="CENTER" />
-         </left>
-         <right>
-            <Button mnemonicParsing="false" onAction="#send" text="%confirm" BorderPane.alignment="CENTER" />
-         </right>
-         <padding>
-            <Insets bottom="10.0" top="30.0" />
-         </padding>
-      </BorderPane>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <ProgressBar fx:id="progress" visible="false">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </ProgressBar>
+            <BorderPane prefWidth="200.0" BorderPane.alignment="CENTER">
+               <left>
+                  <Button mnemonicParsing="false" onAction="#back" text="%cancel" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Button mnemonicParsing="false" onAction="#send" text="%confirm" BorderPane.alignment="CENTER" />
+               </right>
+               <padding>
+                  <Insets bottom="10.0" top="20.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </BorderPane>
+         </children>
+      </VBox>
    </bottom>
 
 
