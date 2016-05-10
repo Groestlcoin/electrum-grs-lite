@@ -1,6 +1,8 @@
 package in.multico.controller;
 
 import com.coinomi.core.coins.CoinType;
+import com.coinomi.core.wallet.AbstractTransaction;
+import com.coinomi.core.wallet.AbstractWallet;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
 import in.multico.connector.Coincap;
@@ -22,7 +24,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.util.Callback;
-import org.bitcoinj.core.Transaction;
 
 import java.math.BigDecimal;
 import java.net.URL;
@@ -48,9 +49,9 @@ public class MainController extends ControllerBased implements Initializable{
     @FXML public Label eqvAmt;
     @FXML public Label totalAmt;
 
-    private HashMap <String, WalletAccount> cIndx = new HashMap<>();
+    private HashMap <String, AbstractWallet> cIndx = new HashMap<>();
     private Set<CoinType> currCoins = new HashSet<>();
-    private WalletAccount currWa;
+    private AbstractWallet currWa;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,7 +59,7 @@ public class MainController extends ControllerBased implements Initializable{
         for (WalletAccount acc : Main.getInstance().getAllAccounts()) {
             String s = acc.getCoinType().getName();// + " (" + acc.getBalance().toFriendlyString() + ")";
             coins.add(s);
-            cIndx.put(s, acc);
+            cIndx.put(s, (AbstractWallet) acc);
             currCoins.add(acc.getCoinType());
         }
         coinsList.setItems(coins);
@@ -103,8 +104,8 @@ public class MainController extends ControllerBased implements Initializable{
                                 eqvAmt.setText("(" + eq + " USD)");
                             }
                         });
-                        for (Transaction tx : currWa.getTransactions().values()) {
-                            Tx t = new Tx(tx, currWa);
+                        for (Object tx : currWa.getTransactions().values()) {
+                            Tx t = new Tx((AbstractTransaction) tx, currWa);
                             t.setUsdAmt(price);
                             ttx2.add(t);
                         }
@@ -124,8 +125,8 @@ public class MainController extends ControllerBased implements Initializable{
         coinAmt.setText(currWa.getBalance().toFriendlyString());
         coinAddr.setText(Main.getAddr(currWa));
         ObservableList<Tx> ttx = FXCollections.observableArrayList();
-        for (Transaction tx : currWa.getTransactions().values()) {
-            Tx t = new Tx(tx, currWa);
+        for (Object tx : currWa.getTransactions().values()) {
+            Tx t = new Tx((AbstractTransaction) tx, currWa);
             ttx.add(t);
         }
         fillTxTable(ttx);

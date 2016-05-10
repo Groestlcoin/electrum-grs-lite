@@ -1,7 +1,10 @@
 package in.multico.model;
 
-import com.coinomi.core.wallet.WalletAccount;
-import org.bitcoinj.core.*;
+import com.coinomi.core.coins.Value;
+import com.coinomi.core.coins.families.NxtFamily;
+import com.coinomi.core.wallet.AbstractAddress;
+import com.coinomi.core.wallet.AbstractTransaction;
+import com.coinomi.core.wallet.AbstractWallet;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -17,11 +20,16 @@ public class Tx {
     private int confirms;
     private String sr;
 
-    public Tx(Transaction t, WalletAccount wa) {
-        this.date = new SimpleDateFormat("dd.MM.yy HH:mm:ss").format(t.getUpdateTime());
+    public Tx(AbstractTransaction t, AbstractWallet wa) {
+        this.date = t.getTimestamp() > 0 ? new SimpleDateFormat("dd.MM.yy HH:mm:ss").format(time2mills(t.getTimestamp())) : "";
         this.amt = new BigDecimal((double) t.getValue(wa).getValue() / (double) wa.getCoinType().oneCoin().getValue()).setScale(wa.getCoinType().getUnitExponent(), BigDecimal.ROUND_HALF_UP).toPlainString() + " " + wa.getCoinType().getSymbol();
-        this.confirms = t.getConfidence().getDepthInBlocks();
+        this.confirms = t.getDepthInBlocks();
         this.sr = calcSr(t, wa);
+    }
+
+    private long time2mills(long t) {
+        if (t < 1000000000000L) return t * 1000L;
+        else return t;
     }
 
     public int getConfirms() {
@@ -53,46 +61,34 @@ public class Tx {
         }
     }
 
-    private String calcSr(Transaction t, WalletAccount wa) {
+    private String calcSr(AbstractTransaction t, AbstractWallet wa) {
         Set<String> oppo = new HashSet<>();
-        final Coin value = t.getValue(wa);
-        List<Address> addrs = value.signum() >= 0 ? getReceiveFromAddresses(t, wa) : getSendToAddresses(t, wa);
-        for (Address a : addrs) {
+        Value value = t.getValue(wa);
+        List<AbstractAddress> addrs = value.signum() >= 0 ? getReceivedFromAddresses(t, wa) : getSendToAddresses(t, wa);
+        for (AbstractAddress a : addrs) {
             oppo.add(a.toString());
         }
         return oppo.toString();
     }
 
-    public static List<Address> getSendToAddresses(Transaction tx, WalletAccount pocket) {
-        List<Address> addresses = new ArrayList<Address>();
-        for (final TransactionOutput output : tx.getOutputs()) {
-            try {
-                if (!output.isMine(pocket)) {
-                    addresses.add(output.getScriptPubKey().getToAddress(pocket.getCoinType()));
-                }
-            } catch (final ScriptException x) { /* ignore this output */ }
+    private List<AbstractAddress> getReceivedFromAddresses(AbstractTransaction tx, AbstractWallet pocket) {
+        List<AbstractAddress> addresses = new ArrayList<AbstractAddress>();
+        if (pocket.getCoinType() instanceof NxtFamily) {
+            return tx.getReceivedFrom();
+        } else {
+            for (AbstractTransaction.AbstractOutput output : tx.getSentTo()) {
+                if (!pocket.isAddressMine(output.getAddress())) continue;
+                addresses.add(output.getAddress());
+            }
         }
         return addresses;
     }
 
-    public static List<Address> getReceiveToAddresses(Transaction tx, WalletAccount pocket) {
-        List<Address> addresses = new ArrayList<Address>();
-        for (final TransactionOutput output : tx.getOutputs()) {
-            try {
-                if (output.isMine(pocket)) {
-                    addresses.add(output.getScriptPubKey().getToAddress(pocket.getCoinType()));
-                }
-            } catch (final ScriptException x) { /* ignore this output */ }
-        }
-        return addresses;
-    }
-
-    public static List<Address> getReceiveFromAddresses(Transaction tx, WalletAccount pocket) {
-        List<Address> addresses = new ArrayList<Address>();
-        for (final TransactionInput input: tx.getInputs()) {
-            try {
-                 addresses.add(input.getFromAddress());
-            } catch (final ScriptException x) { /* ignore this output */ }
+    private List<AbstractAddress> getSendToAddresses(AbstractTransaction tx, AbstractWallet pocket) {
+        List<AbstractAddress> addresses = new ArrayList<AbstractAddress>();
+        for (final AbstractTransaction.AbstractOutput output : tx.getSentTo()) {
+            if (pocket.isAddressMine(output.getAddress())) continue;
+            addresses.add(output.getAddress());
         }
         return addresses;
     }

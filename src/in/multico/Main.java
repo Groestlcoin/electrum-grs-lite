@@ -20,13 +20,14 @@ import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import org.bitcoinj.core.Address;
-import org.bitcoinj.core.Transaction;
 import org.bitcoinj.crypto.MnemonicCode;
 import org.bitcoinj.wallet.KeyChain;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -237,7 +238,7 @@ public class Main extends Application implements WalletAccountEventListener {
     }
 
     public static String getAddr(WalletAccount wa) {
-        Address address;
+        AbstractAddress address;
         if (Settings.getInstanse().isAlwaysRefreshAddr()) {
             address = wa.getReceiveAddress();
         } else {
@@ -296,17 +297,17 @@ public class Main extends Application implements WalletAccountEventListener {
     public void onNewBlock(WalletAccount pocket) {}
 
     @Override
-    public void onTransactionConfidenceChanged(WalletAccount pocket, Transaction tx) {
+    public void onTransactionConfidenceChanged(WalletAccount pocket, AbstractTransaction tx) {
         System.out.println("onTransactionConfidenceChanged: " + tx);
         if (controller != null) controller.doRefresh();
         else System.out.println("controller is not found!");
     }
 
     @Override
-    public void onTransactionBroadcastFailure(WalletAccount pocket, Transaction tx) {}
+    public void onTransactionBroadcastFailure(WalletAccount pocket, AbstractTransaction tx) {}
 
     @Override
-    public void onTransactionBroadcastSuccess(WalletAccount pocket, Transaction tx) {}
+    public void onTransactionBroadcastSuccess(WalletAccount pocket, AbstractTransaction tx) {}
 
     @Override
     public void onWalletChanged(WalletAccount pocket) {
@@ -316,5 +317,6 @@ public class Main extends Application implements WalletAccountEventListener {
     }
 
     @Override
-    public void onConnectivityStatus(WalletPocketConnectivity pocketConnectivity) {}
+    public void onConnectivityStatus(WalletConnectivityStatus connectivityStatus) {}
+
 }

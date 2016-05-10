@@ -2,8 +2,6 @@ package com.coinomi.core.network;
 
 import com.coinomi.core.coins.CoinType;
 
-import java.util.Date;
-
 /**
  * @author John L. Jegutanis
  */
@@ -31,5 +29,10 @@ public class BlockHeader {
 
     public int getBlockHeight() {
         return blockHeight;
+    }
+
+    public boolean equals(BlockHeader blockHeader) {
+        return (this.getBlockHeight() == blockHeader.getBlockHeight() &&
+                 this.getTimestamp() == this.getTimestamp());
     }
 }

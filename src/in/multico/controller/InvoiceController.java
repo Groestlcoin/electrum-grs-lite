@@ -1,5 +1,6 @@
 package in.multico.controller;
 
+import com.coinomi.core.wallet.AbstractAddress;
 import com.coinomi.core.wallet.WalletAccount;
 import com.coinomi.core.wallet.WalletPocketHD;
 import com.google.zxing.BarcodeFormat;
@@ -16,7 +17,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import org.bitcoinj.core.Address;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -86,7 +86,7 @@ public class InvoiceController extends ControllerBased {
         currCoin = currCoin.toLowerCase();
         currAddr = Main.getAddr(currWa);
         repaintQR();
-        for (Address a :((WalletPocketHD) currWa).getUsedAddresses()) {
+        for (AbstractAddress a :((WalletPocketHD) currWa).getUsedAddresses()) {
             if (a.toString().equals(currAddr)) continue;
             addr.getItems().add(a.toString());
         }

@@ -158,13 +158,13 @@ public class ExchangeController extends ControllerBased implements Initializable
             public void run() {
                 boolean success = false;
                 try {
-                    ShapeShiftNormalTx tx = ss.exchange(waTo.getReceiveAddress(), waFrom.getRefundAddress());
+                    ShapeShiftNormalTx tx = ss.exchange(waTo.getReceiveAddress(), waFrom.getRefundAddress(false));
                     WalletPocketHD wph = (WalletPocketHD) waFrom;
-                    SendRequest request = SendRequest.to(tx.deposit, Coin.parseCoin(giveAmt.getText()));
+                    SendRequest request = waFrom.getSendToRequest(tx.deposit, waFrom.getCoinType().value(giveAmt.getText()));
                     KeyCrypter crypter = wph.getKeyCrypter();
                     if (crypter == null) throw new Exception("empty crypter");
                     request.aesKey = crypter.deriveKey(pass.getText());
-                    request.signInputs = true;
+                    request.signTransaction = true;
                     wph.completeAndSignTx(request);
                     if (!wph.broadcastTxSync(request.tx)) {
                         throw new Exception("Error broadcasting transaction: " + request.tx.getHashAsString());
