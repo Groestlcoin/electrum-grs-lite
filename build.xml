@@ -3,6 +3,7 @@
   
   
   <property file="build.properties"/>
+  <property name="app.version" value="0.91"/>
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
@@ -109,10 +110,6 @@
     <pathelement location="${basedir}/lib/zxing-2.1.jar"/>
   </path>
 
-  <path id="appbundler-1.0.classpath">
-    <pathelement location="${basedir}/lib/appbundler-1.0.jar"/>
-  </path>
-
   <path id="library.commons-logging-1.2.classpath">
     <pathelement location="${basedir}/lib/commons-logging-1.2.jar"/>
   </path>
@@ -129,10 +126,9 @@
   <property name="multicoin.output.dir" value="${module.multicoin.basedir}/out/production/multicoin"/>
   <property name="multicoin.testoutput.dir" value="${module.multicoin.basedir}/out/test/multicoin"/>
   <property name="multicoin.macos.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac"/>
-
-  <taskdef name="bundleapp-mac" classname="com.oracle.appbundler.AppBundlerTask">
-    <classpath refid="appbundler-1.0.classpath"/>
-  </taskdef>
+  <property name="multicoin.macos.app.tmp.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac/wallet"/>
+  <property name="multicoin.win.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-win"/>
+  <property name="l4j.dir" value="${basedir}/lib/l4j"/>
 
   <path id="multicoin.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
@@ -304,14 +300,17 @@
     <delete dir="${artifacts.temp.dir}"/>
   </target>
 
-  <target name="bundle-mac" depends="build.modules, build.all.artifacts">
+  <target name="mac" depends="build.modules, build.all.artifacts">
+    <echo message="creating mac native application from ${artifact.output.multicoin:jar}/multicoin.jar" />
     <mkdir dir="${multicoin.macos.app.dir}"/>
-    <bundleapp-mac outputdirectory="${multicoin.macos.app.dir}"
+    <mkdir dir="${multicoin.macos.app.tmp.dir}"/>
+    <taskdef name="bundleapp-mac" classname="com.oracle.appbundler.AppBundlerTask" classpath="${basedir}/lib/appbundler-1.0.jar" />
+    <bundleapp-mac outputdirectory="${multicoin.macos.app.tmp.dir}"
                name="Multicoin"
                icon="icon.icns"
                displayname="Multicoin"
                identifier="in.multico.Main"
-               shortversion="0.2"
+               shortversion="${app.version}"
                applicationCategory="public.app-category.finance"
                mainclassname="in.multico.Main">
       <runtime dir="${path.java}"/>
@@ -322,10 +321,33 @@
     <replaceregexp byline="true">
       <regexp pattern="&lt;/dict&gt;"/>
       <substitution expression="&lt;key&gt;NSHighResolutionCapable&lt;/key&gt;${line.separator}&lt;true/&gt;${line.separator}&lt;/dict&gt;"/>
-      <fileset dir="${multicoin.macos.app.dir}/Multicoin.app/Contents">
+      <fileset dir="${multicoin.macos.app.tmp.dir}/Multicoin.app/Contents">
         <include name="Info.plist"/>
       </fileset>
     </replaceregexp>
+    <echo message="packing..." />
+    <exec executable="hdiutil">
+      <arg value="create" />
+      <arg value="${multicoin.macos.app.dir}/multicoin.dmg" />
+      <arg value="-volname" />
+      <arg value="Multicoin" />
+      <arg value="-fs" />
+      <arg value="HFS+" />
+      <arg value="-srcfolder" />
+      <arg value="${multicoin.macos.app.tmp.dir}" />
+    </exec>
+    <delete dir="${multicoin.macos.app.tmp.dir}"/>
+    <echo message="end." />
+  </target>
+
+  <target name="win" depends="build.modules, build.all.artifacts">
+    <echo message="creating windows exe from ${artifact.output.multicoin:jar}/multicoin.jar" />
+    <mkdir dir="${multicoin.win.app.dir}"/>
+    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${l4j.dir}/launch4j.jar:${l4j.dir}/xstream.jar" />
+    <launch4j
+            outfile="${multicoin.win.app.dir}/multicoin.exe"
+            jar="${artifact.output.multicoin:jar}/multicoin.jar"
+            configFile="${l4j.dir}/winL4j.xml" />
   </target>
 
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>

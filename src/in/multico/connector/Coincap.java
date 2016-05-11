@@ -4,6 +4,7 @@ import com.coinomi.core.exchange.shapeshift.Connection;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import in.multico.Main;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -56,16 +57,16 @@ public class Coincap extends Connection {
                 for (String coin : coins) {
                     PriceResult priceResult = cashe.get(coin);
                     if (priceResult == null) {
-                        System.out.println("no " + coin + " in cashe. Try get from API...");
+                        Main.log("no " + coin + " in cashe. Try get from API...");
                         rez.put(coin, doGetPrice(coin));
                         cashed = false;
                     } else if (System.currentTimeMillis() > priceResult.time + expire) {
-                        System.out.println(coin + " expired in cashe. Try get from API...");
+                        Main.log(coin + " expired in cashe. Try get from API...");
                         cashe.remove(coin);
                         rez.put(coin, doGetPrice(coin));
                         cashed = false;
                     } else {
-                        System.out.println(coin + " in cashe: " + priceResult.price);
+                        Main.log(coin + " in cashe: " + priceResult.price);
                         rez.put(coin, priceResult.price);
                     }
                 }
@@ -82,10 +83,10 @@ public class Coincap extends Connection {
     private double doGetPrice(String coin) {
         try {
             Request request = new Request.Builder().url(URL.replace("$", coin)).build();
-            System.out.println("~~> " + request);
+            Main.log("~~> " + request);
             Response response = new OkHttpClient().newCall(request).execute();
             String s = response.body().string();
-            System.out.println("<~~ " + s);
+            Main.log("<~~ " + s);
             JSONObject jo = new JSONObject(s);
             PriceResult pr = new PriceResult();
             pr.price = jo.getDouble("usd");

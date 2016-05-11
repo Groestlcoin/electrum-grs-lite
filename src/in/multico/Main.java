@@ -22,6 +22,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.bitcoinj.crypto.MnemonicCode;
 import org.bitcoinj.wallet.KeyChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -46,6 +48,7 @@ public class Main extends Application implements WalletAccountEventListener {
     private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
     private static ControllerBased controller;
+    private static Logger logger;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -72,7 +75,7 @@ public class Main extends Application implements WalletAccountEventListener {
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                System.out.println("Begin close...");
+                log("Begin close...");
                 SyncService.getInstance(wallet).stopAll();
                 Platform.exit();
                 System.exit(0);
@@ -145,7 +148,7 @@ public class Main extends Application implements WalletAccountEventListener {
 
     private static Locale getLocale() {
         Locale loc = Locale.getDefault();
-        System.out.println("system locale: " + loc);
+        log("system locale: " + loc);
         if (loc.getLanguage().equals("ru")) {
             return loc;
         }
@@ -173,12 +176,12 @@ public class Main extends Application implements WalletAccountEventListener {
             this.wallet.autosaveToFile(walletFile, WALLET_WRITE_DELAY_SEC, TimeUnit.SECONDS, new WalletFiles.Listener() {
                 @Override
                 public void onBeforeAutoSave(File tempFile) {
-                    System.out.println("onBeforeAutoSave " + tempFile.getAbsolutePath());
+                    log("onBeforeAutoSave " + tempFile.getAbsolutePath());
                 }
 
                 @Override
                 public void onAfterAutoSave(File newlySavedFile) {
-                    System.out.println("onAfterAutoSave " + newlySavedFile.getAbsolutePath());
+                    log("onAfterAutoSave " + newlySavedFile.getAbsolutePath());
                 }
             });
             this.wallet.saveNow();
@@ -198,13 +201,13 @@ public class Main extends Application implements WalletAccountEventListener {
             try {
                 walletStream = new FileInputStream(walletFile);
                 setWallet(WalletProtobufSerializer.readWallet(walletStream));
-                System.out.println("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
+                log("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
             } catch (Exception e) {
                 e.printStackTrace();
                 showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
                     @Override
                     public void onClose() {
-                        System.out.println("Begin close...");
+                        log("Begin close...");
                         SyncService.getInstance(wallet).stopAll();
                         Platform.exit();
                         System.exit(0);
@@ -275,12 +278,17 @@ public class Main extends Application implements WalletAccountEventListener {
         return instance;
     }
 
+    public static void log(String s) {
+        logger.info(s);
+    }
+
     public static void main(String[] args) {
+        logger = LoggerFactory.getLogger(Main.class);
         if (MnemonicCode.INSTANCE == null) {
             try {
                 MnemonicCode.INSTANCE = new MnemonicCode();
             } catch (IOException e) {
-                System.out.println("Could not set MnemonicCode.INSTANCE");
+                log("Could not set MnemonicCode.INSTANCE");
             }
         }
         launch(args);
@@ -288,9 +296,9 @@ public class Main extends Application implements WalletAccountEventListener {
 
     @Override
     public void onNewBalance(Value newBalance) {
-        System.out.println("onNewBalance: " + newBalance);
+        log("onNewBalance: " + newBalance);
         if (controller != null) controller.doRefresh();
-        else System.out.println("controller is not found!");
+        else log("controller is not found!");
     }
 
     @Override
@@ -298,9 +306,9 @@ public class Main extends Application implements WalletAccountEventListener {
 
     @Override
     public void onTransactionConfidenceChanged(WalletAccount pocket, AbstractTransaction tx) {
-        System.out.println("onTransactionConfidenceChanged: " + tx);
+        log("onTransactionConfidenceChanged: " + tx);
         if (controller != null) controller.doRefresh();
-        else System.out.println("controller is not found!");
+        else log("controller is not found!");
     }
 
     @Override
@@ -311,9 +319,9 @@ public class Main extends Application implements WalletAccountEventListener {
 
     @Override
     public void onWalletChanged(WalletAccount pocket) {
-        System.out.println("onWalletChanged: " + pocket);
+        log("onWalletChanged: " + pocket);
         if (controller != null) controller.doRefresh();
-        else System.out.println("controller is not found!");
+        else log("controller is not found!");
     }
 
     @Override
