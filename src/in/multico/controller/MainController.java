@@ -84,6 +84,7 @@ public class MainController extends ControllerBased implements Initializable{
             @Override
             public void onPrice(Map<String, Double> prices) {
                 double all = 0.0;
+                setEqvAmt("0.00");
                 for (String coin : prices.keySet()) {
                     for (WalletAccount wa : allAccounts) {
                         if (wa.getCoinType().getSymbol().equals(coin)) {
@@ -97,13 +98,8 @@ public class MainController extends ControllerBased implements Initializable{
                         long value = currWa.getBalance().getValue();
                         long one = currWa.getCoinType().oneCoin().getValue();
                         final double eqv = value / one * price;
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                String eq = new BigDecimal(eqv).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
-                                eqvAmt.setText("(" + eq + " USD)");
-                            }
-                        });
+                        String eq = new BigDecimal(eqv).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
+                        setEqvAmt(eq);
                         for (Object tx : currWa.getTransactions().values()) {
                             Tx t = new Tx((AbstractTransaction) tx, currWa);
                             t.setUsdAmt(price);
@@ -130,6 +126,15 @@ public class MainController extends ControllerBased implements Initializable{
             ttx.add(t);
         }
         fillTxTable(ttx);
+    }
+
+    private void setEqvAmt(final String amt) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                eqvAmt.setText("(" + amt + " USD)");
+            }
+        });
     }
 
     private void fillTxTable(final ObservableList<Tx> ttx) {
