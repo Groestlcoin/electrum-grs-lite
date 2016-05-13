@@ -5,6 +5,7 @@ import com.coinomi.core.coins.Value;
 import com.coinomi.core.wallet.*;
 import com.google.common.collect.ImmutableList;
 import in.multico.controller.ControllerBased;
+import in.multico.controller.MainController;
 import in.multico.controller.MsgController;
 import in.multico.controller.StartSelectController;
 import in.multico.listener.CloseListener;
@@ -26,14 +27,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Copyright © 2016 Marat Shmush. All rights reserved.
@@ -54,9 +51,37 @@ public class Main extends Application implements WalletAccountEventListener {
     public void start(Stage primaryStage) throws Exception{
         instance = this;
         String startLayout;
-        if (new File(WALLET_FILE).exists()) {
-            startLayout = "layout/main.fxml";
-            loadWallet();
+        File walletFile = new File(WALLET_FILE);
+        if (walletFile.exists()) {
+            startLayout = "layout/" + new MainController().getLayout();
+            final long start = System.currentTimeMillis();
+            FileInputStream walletStream = null;
+            try {
+                walletStream = new FileInputStream(walletFile);
+                wallet = WalletProtobufSerializer.readWallet(walletStream);
+                SyncService.getInstance(this.wallet).restart();
+                for (WalletAccount wa : wallet.getAllAccounts()) {
+                    wa.addEventListener(this);
+                }
+                log("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
+            } catch (Exception e) {
+                e.printStackTrace();
+                showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
+                    @Override
+                    public void onClose() {
+                        log("Begin close...");
+                        SyncService.getInstance(wallet).stopAll();
+                        Platform.exit();
+                        System.exit(0);
+                    }
+                });
+            } finally {
+                if (walletStream != null) {
+                    try {
+                        walletStream.close();
+                    } catch (final IOException x) { /* ignore */ }
+                }
+            }
         } else {
             startLayout = "layout/" + new StartSelectController().getLayout();
         }
@@ -167,58 +192,16 @@ public class Main extends Application implements WalletAccountEventListener {
     }
 
     public void setWallet(@Nullable Wallet wallet) {
-        if (this.wallet != null) {
-            this.wallet.shutdownAutosaveAndWait();
-        }
         this.wallet = wallet;
         if (this.wallet != null) {
-            File walletFile = new File(WALLET_FILE);
-            this.wallet.autosaveToFile(walletFile, WALLET_WRITE_DELAY_SEC, TimeUnit.SECONDS, new WalletFiles.Listener() {
-                @Override
-                public void onBeforeAutoSave(File tempFile) {
-                    log("onBeforeAutoSave " + tempFile.getAbsolutePath());
-                }
-
-                @Override
-                public void onAfterAutoSave(File newlySavedFile) {
-                    log("onAfterAutoSave " + newlySavedFile.getAbsolutePath());
-                }
-            });
-            this.wallet.saveNow();
+            try {
+                this.wallet.saveToFileStream(new FileOutputStream(new File(WALLET_FILE)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             SyncService.getInstance(this.wallet).restart();
             for (WalletAccount wa : wallet.getAllAccounts()) {
                 wa.addEventListener(this);
-            }
-        }
-    }
-
-    private void loadWallet() {
-        File walletFile = new File(WALLET_FILE);
-        if (walletFile.exists()) {
-
-            final long start = System.currentTimeMillis();
-            FileInputStream walletStream = null;
-            try {
-                walletStream = new FileInputStream(walletFile);
-                setWallet(WalletProtobufSerializer.readWallet(walletStream));
-                log("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
-            } catch (Exception e) {
-                e.printStackTrace();
-                showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
-                    @Override
-                    public void onClose() {
-                        log("Begin close...");
-                        SyncService.getInstance(wallet).stopAll();
-                        Platform.exit();
-                        System.exit(0);
-                    }
-                });
-            } finally {
-                if (walletStream != null) {
-                    try {
-                        walletStream.close();
-                    } catch (final IOException x) { /* ignore */ }
-                }
             }
         }
     }
