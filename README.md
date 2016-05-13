@@ -1,14 +1,22 @@
 Multicoin Wallet
 ===============
 
-I like Coinomi wallet (https://coinomi.com) but this application exists only for mobile devices.
-This project is attempt to port my favorite cryptocurrency wallet to desktop.
+This project is attempt to port [Coinomi wallet](https://coinomi.com) to desktop.
 
 This application using Java and compatible for all desktop platform.
 
 ## Building the app
 
-Make sure that you have JDK 7 installed before building. You can use ant to build jar.
+Make sure that you have JDK 8 installed before building. You can use [ant](http://ant.apache.org/bindownload.cgi) to build jar:
+
+- To build Linux version run command 'ant'. Obtained multicoin.jar can be found in out/artifacts/multicoin_jar/
+- To biuld MacOs version: run command 'ant mac'. Obtained multicoin.dmg can be found in out/production/multicoin/wallet-mac/
+- To biuld Windows version: run command 'ant win'. Obtained multicoin.exe can be found in out/production/multicoin/wallet-win/ 
+
+## Installing app and dependencies
+
+- Application ceated for MacOs platform contains embedded java runtime and have'nt any dependencies. You need only run multicoin.dmg and drag'n'drop Multicoin app to Applications folder.
+- you need install [Java 8](http://java.com/) to run application On Linux or Windows platform.
 
 ## Run app
 
