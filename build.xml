@@ -128,6 +128,8 @@
   <property name="multicoin.macos.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac"/>
   <property name="multicoin.macos.app.tmp.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-mac/wallet"/>
   <property name="multicoin.win.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-win"/>
+  <property name="multicoin.deb.app.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-deb"/>
+  <property name="multicoin.deb.app.tmp.dir" value="${module.multicoin.basedir}/out/production/multicoin/wallet-deb-tmp"/>
   <property name="l4j.dir" value="${basedir}/lib/l4j"/>
 
   <path id="multicoin.module.bootclasspath">
@@ -348,6 +350,25 @@
             outfile="${multicoin.win.app.dir}/multicoin.exe"
             jar="${artifact.output.multicoin:jar}/multicoin.jar"
             configFile="${l4j.dir}/winL4j.xml" />
+  </target>
+
+  <target name="deb" depends="build.modules, build.all.artifacts">
+    <echo message="creating debian package from ${artifact.output.multicoin:jar}/multicoin.jar" />
+    <mkdir dir="${multicoin.deb.app.tmp.dir}"/>
+    <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask" classpath="${basedir}/lib/jdeb-1.5.jar"/>
+    <copy todir="${multicoin.deb.app.tmp.dir}">
+      <fileset dir="${basedir}/control"/>
+      <filterset begintoken="[[" endtoken="]]">
+        <filter token="version" value="${app.version}"/>
+        <filter token="description" value="Multicoin wallet"/>
+        <filter token="name" value="${ant.project.name}"/>
+      </filterset>
+    </copy>
+    <deb destfile="${multicoin.deb.app.dir}/${ant.project.name}.deb" control="${multicoin.deb.app.tmp.dir}" verbose="true">
+      <data src="${artifact.output.multicoin:jar}/multicoin.jar" type="file">
+        <mapper type="perm" prefix="/usr/share/jdeb/lib"/>
+      </data>
+    </deb>
   </target>
 
   <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
