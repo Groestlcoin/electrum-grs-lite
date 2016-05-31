@@ -138,6 +138,7 @@ public class MainController extends ControllerBased implements Initializable{
     }
 
     private void fillTxTable(final ObservableList<Tx> ttx) {
+        final int selRow = txTable.getSelectionModel().getSelectedIndex();
         Tx.sort(ttx);
         Platform.runLater(new Runnable() {
             @Override
@@ -177,13 +178,17 @@ public class MainController extends ControllerBased implements Initializable{
                     @Override
                     public void handle(ActionEvent event) {
                         Tx selected = (Tx) txTable.getSelectionModel().getSelectedItem();
-                        ClipboardContent content = new ClipboardContent();
-                        content.putString(selected.getSr());
-                        Clipboard.getSystemClipboard().setContent(content);
+                        if (selected != null) {
+                            ClipboardContent content = new ClipboardContent();
+                            Main.log(selected.getSr());
+                            content.putString(selected.getSr());
+                            Clipboard.getSystemClipboard().setContent(content);
+                        }
                     }
                 });
                 tableContextMenu.getItems().add(copy);
                 txTable.setContextMenu(tableContextMenu);
+                txTable.getSelectionModel().selectIndices(selRow);
             }
         });
     }
