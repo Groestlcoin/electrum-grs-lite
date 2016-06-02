@@ -42,7 +42,6 @@ public class Main extends Application implements WalletAccountEventListener {
 
     public static final String WALLET_FILE = "wallet.dat";
     private Wallet wallet;
-    private static final int WALLET_WRITE_DELAY_SEC = 10;
     private static Main instance;
     private static ControllerBased controller;
     private static Logger logger;
@@ -65,16 +64,21 @@ public class Main extends Application implements WalletAccountEventListener {
                 }
                 log("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
             } catch (Exception e) {
-                e.printStackTrace();
-                showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
-                    @Override
-                    public void onClose() {
-                        log("Begin close...");
-                        SyncService.getInstance(wallet).stopAll();
-                        Platform.exit();
-                        System.exit(0);
-                    }
-                });
+                if (isWindows()) {
+                    startLayout = "layout/" + new StartSelectController().getLayout();
+                    doStart(primaryStage, startLayout);
+                } else {
+                    e.printStackTrace();
+                    showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
+                        @Override
+                        public void onClose() {
+                            log("Begin close...");
+                            SyncService.getInstance(wallet).stopAll();
+                            Platform.exit();
+                            System.exit(0);
+                        }
+                    });
+                }
             } finally {
                 if (walletStream != null) {
                     try {
@@ -85,6 +89,10 @@ public class Main extends Application implements WalletAccountEventListener {
         } else {
             startLayout = "layout/" + new StartSelectController().getLayout();
         }
+        doStart(primaryStage, startLayout);
+    }
+
+    private void doStart(Stage primaryStage, String startLayout) throws IOException {
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
         loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
         Parent root = loader.load();
