@@ -9,14 +9,14 @@ This application using Java and compatible for all desktop platform.
 
 Make sure that you have JDK 8 installed before building. You can use [ant](http://ant.apache.org/bindownload.cgi) to build jar:
 
-- To build Linux version run command 'ant'. Obtained multicoin.jar can be found in out/artifacts/multicoin_jar/
+- To build Linux version run command 'ant deb'. Obtained multicoin.deb can be found in out/production/multicoin/wallet-deb/
 - To biuld MacOs version: run command 'ant mac' (Available on MacOs platform). Obtained multicoin.dmg can be found in out/production/multicoin/wallet-mac/ 
 - To biuld Windows version: run command 'ant win' (Available on MacOs or Windows platform). Obtained multicoin.exe can be found in out/production/multicoin/wallet-win/  
 
 ## Installing app and dependencies
 
 - Application ceated for MacOs platform contains embedded java runtime and have'nt any dependencies. You need only run multicoin.dmg and drag'n'drop Multicoin app to Applications folder.
-- you need install [Java 8](http://java.com/) to run application on Linux or Windows platform.
+- you need install [Java 8](http://java.com/) to run application on Linux or Windows platform. If you using openJDK on Linux you must install openjfx. When you will install app from deb package all dependencies will be installed automatically.  
 
 ## Run app
 

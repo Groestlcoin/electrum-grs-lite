@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Name=Multicoin
+Comment=Multicoin cryptocurrency wallet
+Exec=/usr/bin/multicoin
+Icon=/usr/share/icons/hicolor/32x32/apps/gcr-gnupg.png
+Terminal=false
+Type=Application
+Categories=Utility;Application;Finance;

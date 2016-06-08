@@ -357,7 +357,7 @@
     <mkdir dir="${multicoin.deb.app.tmp.dir}"/>
     <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask" classpath="${basedir}/lib/jdeb-1.5.jar"/>
     <copy todir="${multicoin.deb.app.tmp.dir}">
-      <fileset dir="${basedir}/control"/>
+      <fileset dir="${basedir}/deb/control"/>
       <filterset begintoken="[[" endtoken="]]">
         <filter token="version" value="${app.version}"/>
         <filter token="description" value="Multicoin wallet"/>
@@ -366,8 +366,15 @@
     </copy>
     <deb destfile="${multicoin.deb.app.dir}/${ant.project.name}.deb" control="${multicoin.deb.app.tmp.dir}" verbose="true">
       <data src="${artifact.output.multicoin:jar}/multicoin.jar" type="file">
-        <mapper type="perm" prefix="/usr/share/jdeb/lib"/>
+        <mapper type="perm" prefix="/usr/lib/multicoin"/>
       </data>
+      <data src="${basedir}/deb/multicoin.sh" type="file">
+        <mapper type="perm" prefix="/usr/bin"/>
+      </data>
+      <data src="${basedir}/deb/multicoin.desktop" type="file">
+        <mapper type="perm" prefix="/usr/share/applications"/>
+      </data>
+      <link name="/usr/bin/multicoin" target="/usr/bin/multicoin.sh" mode="755"/>
     </deb>
   </target>
 

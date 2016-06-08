@@ -121,7 +121,7 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (!Main.isWindows()) {
+        if (!Main.isWindows() && !Main.isUnix()) {
             List<String> mnemonicWorList = Main.getInstance().getMnemonicWorList();
             ObservableList<String> ol = FXCollections.observableList(mnemonicWorList);
             w1.setData(ol);

@@ -194,6 +194,13 @@ public class Main extends Application implements WalletAccountEventListener {
         return s.contains("win");
     }
 
+    public static boolean isUnix() {
+        String s = System.getProperty("os.name");
+        s = s.toLowerCase();
+        return (s.contains("nix") || s.contains("nux") || s.contains("aix"));
+
+    }
+
     public static String getLocString(String key) {
         ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", getLocale());
         return bundle.getString(key);
