@@ -10,6 +10,8 @@ import in.multico.controller.MsgController;
 import in.multico.controller.StartSelectController;
 import in.multico.listener.CloseListener;
 import in.multico.listener.ShowListener;
+import in.multico.tool.Tool;
+import in.multico.tool.Updater;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,7 +20,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Control;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import org.bitcoinj.crypto.MnemonicCode;
@@ -27,9 +28,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -45,6 +48,7 @@ public class Main extends Application implements WalletAccountEventListener {
     private static Main instance;
     private static ControllerBased controller;
     private static Logger logger;
+    private static Updater updater;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -64,12 +68,12 @@ public class Main extends Application implements WalletAccountEventListener {
                 }
                 log("wallet loaded from: '" + walletFile.getAbsolutePath() + "', took " + (System.currentTimeMillis() - start) + "ms");
             } catch (Exception e) {
-                if (isWindows()) {
+                if (Tool.isWindows()) {
                     startLayout = "layout/" + new StartSelectController().getLayout();
                     doStart(primaryStage, startLayout);
                 } else {
                     e.printStackTrace();
-                    showMessage(getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
+                    showMessage(Tool.getLocString("err_load_wallet") + ": " + e.getMessage(), new CloseListener() {
                         @Override
                         public void onClose() {
                             log("Begin close...");
@@ -94,7 +98,7 @@ public class Main extends Application implements WalletAccountEventListener {
 
     private void doStart(Stage primaryStage, String startLayout) throws IOException {
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
-        loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
+        loader.setResources(ResourceBundle.getBundle("bundles.strings", Tool.getLocale()));
         Parent root = loader.load();
         primaryStage.setTitle("Multicoin wallet");
         primaryStage.setScene(new Scene(root));
@@ -126,7 +130,7 @@ public class Main extends Application implements WalletAccountEventListener {
         stage.close();
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + layout));
-            loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", Tool.getLocale()));
             Parent root = loader.load();
             scene.setRoot(root);
             scene.getStylesheets().add(Main.class.getResource("layout/main.css").toExternalForm());
@@ -145,15 +149,6 @@ public class Main extends Application implements WalletAccountEventListener {
         }
     }
 
-    public static Image getCoinImage(CoinType coin) {
-        String name = coin.getName();
-        if (name.contains("beta")) name = name.split(" ")[0];
-        name = name.replaceAll(" ", "_");
-        name = name.toLowerCase();
-        InputStream stream = Main.class.getResourceAsStream("icons/" + name + ".png");
-        return new Image(stream);
-    }
-
     public static void showMessage(final String msg) {
         showMessage(msg, null);
     }
@@ -161,7 +156,7 @@ public class Main extends Application implements WalletAccountEventListener {
     public static void showMessage(final String msg, final CloseListener cl) {
         try {
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("layout/" + new MsgController().getLayout()));
-            loader.setResources(ResourceBundle.getBundle("bundles.strings", getLocale()));
+            loader.setResources(ResourceBundle.getBundle("bundles.strings", Tool.getLocale()));
             Parent root = loader.load();
             final Stage stage = new Stage();
             stage.setScene(new Scene(root, 400, 200));
@@ -177,33 +172,6 @@ public class Main extends Application implements WalletAccountEventListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private static Locale getLocale() {
-        Locale loc = Locale.getDefault();
-        log("system locale: " + loc);
-        if (loc.getLanguage().equals("ru")) {
-            return loc;
-        }
-        return new Locale("en", "EN");
-    }
-
-    public static boolean isWindows() {
-        String s = System.getProperty("os.name");
-        s = s.toLowerCase();
-        return s.contains("win");
-    }
-
-    public static boolean isUnix() {
-        String s = System.getProperty("os.name");
-        s = s.toLowerCase();
-        return (s.contains("nix") || s.contains("nux") || s.contains("aix"));
-
-    }
-
-    public static String getLocString(String key) {
-        ResourceBundle bundle = ResourceBundle.getBundle("bundles.strings", getLocale());
-        return bundle.getString(key);
     }
 
     public void setWallet(@Nullable Wallet wallet) {
@@ -289,6 +257,36 @@ public class Main extends Application implements WalletAccountEventListener {
                 log("Could not set MnemonicCode.INSTANCE");
             }
         }
+        updater = new Updater(new Updater.UpdateListener() {
+            @Override
+            public void onReady() {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        SyncService.getInstance(getInstance().wallet).stopAll();
+                        showMessage(Tool.getLocString("ready_to_update"), new CloseListener() {
+                            @Override
+                            public void onClose() {
+                                updater.finish();
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFinish() {
+                Platform.exit();
+                System.exit(0);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+                showMessage(e.getMessage());
+            }
+        });
+        updater.prepare();
         launch(args);
     }
 

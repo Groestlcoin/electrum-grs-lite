@@ -3,6 +3,7 @@ package in.multico.controller;
 import in.multico.Main;
 import in.multico.listener.CloseListener;
 import in.multico.listener.ShowListener;
+import in.multico.tool.Tool;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -103,7 +104,7 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
     }
 
     private void showErr(String word, final ActionEvent event) throws Exception {
-        Main.showMessage(Main.getLocString("err_data"), new CloseListener() {
+        Main.showMessage(Tool.getLocString("err_data"), new CloseListener() {
             @Override
             public void onClose() {
                 Main.refreshLayout(event, new ShowMnemonicController().getLayout(), new ShowListener() {
@@ -121,7 +122,7 @@ public class CheckMnemonicController extends ControllerBased implements Initiali
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (!Main.isWindows() && !Main.isUnix()) {
+        if (!Tool.isWindows() && !Tool.isUnix()) {
             List<String> mnemonicWorList = Main.getInstance().getMnemonicWorList();
             ObservableList<String> ol = FXCollections.observableList(mnemonicWorList);
             w1.setData(ol);

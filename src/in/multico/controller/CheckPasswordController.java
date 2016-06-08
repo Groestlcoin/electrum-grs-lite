@@ -5,6 +5,7 @@ import com.coinomi.core.wallet.Wallet;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
 import in.multico.listener.ShowListener;
+import in.multico.tool.Tool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -99,24 +100,24 @@ public class CheckPasswordController extends ControllerBased{
         } catch (Exception e) {
             e.printStackTrace();
             pass.setText("");
-            Main.showMessage(Main.getLocString("wrong_pass"));
+            Main.showMessage(Tool.getLocString("wrong_pass"));
         }
     }
 
     public void setNextStepMnemonic() {
-        message.setText(Main.getLocString("enter_pass"));
+        message.setText(Tool.getLocString("enter_pass"));
         nextStep = Next.showMnemonic;
     }
 
 
     public void setNextChangePass() {
-        message.setText(Main.getLocString("enter_old_pass"));
+        message.setText(Tool.getLocString("enter_old_pass"));
         nextStep = Next.changePass;
     }
 
     public void setAppendedCoin(CoinType coin) {
         addCoin = coin;
-        message.setText(Main.getLocString("to_add") + " " + coin.getName() + " " + Main.getLocString("enter_pass_part"));
+        message.setText(Tool.getLocString("to_add") + " " + coin.getName() + " " + Tool.getLocString("enter_pass_part"));
         nextStep = Next.addCoin;
     }
 

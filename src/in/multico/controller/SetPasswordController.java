@@ -4,6 +4,7 @@ import com.coinomi.core.coins.BitcoinMain;
 import com.coinomi.core.wallet.Wallet;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
+import in.multico.tool.Tool;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -25,8 +26,8 @@ public class SetPasswordController extends ControllerBased{
 
     @FXML
     private void next(ActionEvent event) {
-        if (pass.getText().length() < 4) Main.showMessage(Main.getLocString("err_pass_len"));
-        if (!pass.getText().equals(repass.getText())) Main.showMessage(Main.getLocString("err_passs_match"));
+        if (pass.getText().length() < 4) Main.showMessage(Tool.getLocString("err_pass_len"));
+        if (!pass.getText().equals(repass.getText())) Main.showMessage(Tool.getLocString("err_passs_match"));
         try {
             Wallet wallet = new Wallet(mm);
             KeyCrypterScrypt crypter = new KeyCrypterScrypt();
@@ -44,7 +45,7 @@ public class SetPasswordController extends ControllerBased{
             Main.refreshLayout(event, new MainController().getLayout());
         } catch (Exception e) {
             e.printStackTrace();
-            Main.showMessage(Main.getLocString("err_wallet_create") + ": " + e.getMessage());
+            Main.showMessage(Tool.getLocString("err_wallet_create") + ": " + e.getMessage());
         }
     }
 

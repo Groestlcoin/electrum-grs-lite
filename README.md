@@ -9,7 +9,7 @@ This application using Java and compatible for all desktop platform.
 
 Make sure that you have JDK 8 installed before building. You can use [ant](http://ant.apache.org/bindownload.cgi) to build jar:
 
-- To build Linux version run command 'ant deb'. Obtained multicoin.deb can be found in out/production/multicoin/wallet-deb/
+- To build Linux version run command 'ant deb'. (Available on MacOs or Linux platform) Obtained multicoin.deb can be found in out/production/multicoin/wallet-deb/
 - To biuld MacOs version: run command 'ant mac' (Available on MacOs platform). Obtained multicoin.dmg can be found in out/production/multicoin/wallet-mac/ 
 - To biuld Windows version: run command 'ant win' (Available on MacOs or Windows platform). Obtained multicoin.exe can be found in out/production/multicoin/wallet-win/  
 
@@ -20,11 +20,18 @@ Make sure that you have JDK 8 installed before building. You can use [ant](http:
 
 ## Run app
 
-java -jar multicoin.jar
+- On Windows you can run multicon.exe or create desktop link to run app manually
+- On Linux you can run 'multicoin' command in terminal or copy /usr/share/applications/multicoin.desktop launcher to ~/Desktop folder and use it to run app
+- On MacOs you can use the same way to run like other applications
 
-When application will run first time, file "wallet.dat" will be created in current directory. Don't loose this file. 
+When application will run first time, file "wallet.dat" will be created in current directory (User's home directory for Linux or MacOs platform). Don't loose this file. 
 Also you must store mnemonic code what will be generated at first launch. 
 With mnemonic code you can restore your wallet when you lost wallet.dat file or forgot wallet password
+
+## Automatic update
+
+When a new version of the application is available, the app will automatically update themselves and notify the user. 
+After upgrade the application will be closed and will need to re-open. This option available now for MacOs and Linux platforms.
 
 ## Contributions
 

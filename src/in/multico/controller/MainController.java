@@ -8,6 +8,7 @@ import in.multico.Main;
 import in.multico.connector.Coincap;
 import in.multico.listener.ShowListener;
 import in.multico.model.Tx;
+import in.multico.tool.Tool;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -117,7 +118,7 @@ public class MainController extends ControllerBased implements Initializable{
                 });
             }
         });
-        coinIcon.setImage(Main.getCoinImage(currWa.getCoinType()));
+        coinIcon.setImage(Tool.getCoinImage(currWa.getCoinType()));
         coinAmt.setText(currWa.getBalance().toFriendlyString());
         coinAddr.setText(Main.getAddr(currWa));
         ObservableList<Tx> ttx = FXCollections.observableArrayList();

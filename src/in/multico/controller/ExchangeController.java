@@ -12,6 +12,7 @@ import com.coinomi.core.wallet.WalletAccount;
 import com.coinomi.core.wallet.WalletPocketHD;
 import in.multico.Main;
 import in.multico.listener.CloseListener;
+import in.multico.tool.Tool;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -179,14 +180,14 @@ public class ExchangeController extends ControllerBased implements Initializable
                     public void run() {
                         progress.setVisible(false);
                         if (finalSuccess) {
-                            Main.showMessage(Main.getLocString("coins_sent"), new CloseListener() {
+                            Main.showMessage(Tool.getLocString("coins_sent"), new CloseListener() {
                                 @Override
                                 public void onClose() {
                                     Main.refreshLayout(event, new MainController().getLayout());
                                 }
                             });
                         } else {
-                            Main.showMessage(Main.getLocString("err_data"));
+                            Main.showMessage(Tool.getLocString("err_data"));
                         }
                     }
                 });
