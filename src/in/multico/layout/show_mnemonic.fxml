@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 <GridPane fx:controller="in.multico.controller.ShowMnemonicController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10" prefWidth="400">
     <padding>
         <Insets right="20.0" left="20.0" bottom="20.0" top="20.0"/>
     </padding>

@@ -4,10 +4,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<?import np.com.ngopal.control.AutoFillTextBox?>
 
+<?import javafx.scene.control.ComboBox?>
 <GridPane fx:controller="in.multico.controller.CheckMnemonicController"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10" prefWidth="500">
     <padding>
         <Insets right="20.0" left="20.0" bottom="20.0" top="20.0"/>
     </padding>
@@ -19,28 +19,28 @@
         <Label text="%order_important"/>
     </VBox>
 
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w2" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w3" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w4" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w2" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w3" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w4" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
 
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w5" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w6" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w7" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w8" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w5" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w6" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w7" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w8" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
 
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w9" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w10" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w11" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w12" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w9" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w10" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w11" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w12" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
 
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w13" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w14" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w15" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w16" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w13" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w14" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w15" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w16" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
 
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w17" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
-    <AutoFillTextBox style="-fx-font-size: 14px" fx:id="w18" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w17" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+    <ComboBox style="-fx-font-size: 14px" fx:id="w18" GridPane.columnIndex="3" GridPane.rowIndex="5"/>
 
     <Button onAction="#next" text="%next" GridPane.columnIndex="4" GridPane.rowIndex="6" />
     <Label prefWidth="10" GridPane.columnIndex="5" GridPane.rowIndex="6" />

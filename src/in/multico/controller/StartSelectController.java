@@ -5,7 +5,6 @@ import in.multico.Main;
 import in.multico.listener.ShowListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 
 import java.util.List;
 
@@ -17,9 +16,7 @@ import java.util.List;
 
 public class StartSelectController extends ControllerBased{
 
-    public Label rez;
-
-    public static final int SEED_ENTROPY_DEFAULT = 192;
+    private static final int SEED_ENTROPY_DEFAULT = 192;
 
     @FXML
     private void createWallet(ActionEvent event) {
@@ -36,7 +33,13 @@ public class StartSelectController extends ControllerBased{
 
     @FXML
     private void importWallet(ActionEvent event) {
-        Main.refreshLayout(event, new CheckMnemonicController().getLayout());
+        Main.refreshLayout(event, new CheckMnemonicController().getLayout(), new ShowListener() {
+            @Override
+            public void onShow(Object controller) {
+                CheckMnemonicController c = (CheckMnemonicController) controller;
+                c.setMnemonic(null);
+            }
+        });
     }
 
     @Override

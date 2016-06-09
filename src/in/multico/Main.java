@@ -193,11 +193,6 @@ public class Main extends Application implements WalletAccountEventListener {
         return wallet;
     }
 
-    public List<String> getMnemonicWorList() {
-        return MnemonicCode.INSTANCE.getWordList();
-    }
-
-
     public List<WalletAccount> getAccounts(CoinType type) {
         if (wallet != null) {
             return wallet.getAccounts(type);

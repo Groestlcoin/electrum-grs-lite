@@ -3,14 +3,15 @@ package in.multico.tool;
 import com.coinomi.core.coins.CoinType;
 import in.multico.Main;
 import javafx.scene.image.Image;
+import org.bitcoinj.crypto.MnemonicCode;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by vp
@@ -63,5 +64,21 @@ public class Tool {
         name = name.toLowerCase();
         InputStream stream = Main.class.getResourceAsStream("icons/" + name + ".png");
         return new Image(stream);
+    }
+
+    public static List<String> getMnemonicWorList(String correctW) {
+        List<String> wordList = MnemonicCode.INSTANCE.getWordList();
+        if (correctW == null) return wordList;
+        wordList.remove(correctW);
+        List<String> rez = new ArrayList<>();
+        rez.add(correctW);
+        rez.add(wordList.get(getRandom(0, wordList.size()-2)));
+        rez.add(wordList.get(getRandom(0, wordList.size()-2)));
+        Collections.shuffle(rez);
+        return rez;
+    }
+
+    public static int getRandom(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }
