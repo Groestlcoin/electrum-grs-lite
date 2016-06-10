@@ -26,7 +26,10 @@ public class Updater {
     }
 
     public void prepare() {
-        if (!currFile.getAbsolutePath().endsWith(".jar")) return;
+        if (!currFile.getAbsolutePath().endsWith(".jar")) {
+            Main.log("jar file not found: " + currFile.getAbsolutePath());
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -40,12 +43,13 @@ public class Updater {
                         request = new Request.Builder().url(URL_JAR).build();
                         response = new OkHttpClient().newCall(request).execute();
                         BufferedInputStream in = new BufferedInputStream(response.body().byteStream());
-                        byte[] buf = new byte[1024];
+                        byte[] buf = new byte[2048];
                         int c;
                         tmpFile = new File(currFile.getParent() + File.separator + "tmp.jar");
                         FileOutputStream os = new FileOutputStream(tmpFile);
                         while ((c = in.read(buf)) != -1) {
                             os.write(buf, 0, c);
+                            System.out.print(".");
                         }
                         os.flush();
                         os.close();

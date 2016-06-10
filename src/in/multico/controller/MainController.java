@@ -89,7 +89,7 @@ public class MainController extends ControllerBased implements Initializable{
                 for (String coin : prices.keySet()) {
                     for (WalletAccount wa : allAccounts) {
                         if (wa.getCoinType().getSymbol().equals(coin)) {
-                            all += wa.getBalance().getValue() / wa.getCoinType().oneCoin().getValue() * prices.get(coin);
+                            all += (double) wa.getBalance().getValue() / (double) wa.getCoinType().oneCoin().getValue() * prices.get(coin);
                             break;
                         }
                     }
@@ -98,7 +98,7 @@ public class MainController extends ControllerBased implements Initializable{
                         ObservableList<Tx> ttx2 = FXCollections.observableArrayList();
                         long value = currWa.getBalance().getValue();
                         long one = currWa.getCoinType().oneCoin().getValue();
-                        final double eqv = value / one * price;
+                        final double eqv = (double) value / (double) one * price;
                         String eq = new BigDecimal(eqv).setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString();
                         setEqvAmt(eq);
                         for (Object tx : currWa.getTransactions().values()) {
