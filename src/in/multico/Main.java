@@ -252,36 +252,36 @@ public class Main extends Application implements WalletAccountEventListener {
                 log("Could not set MnemonicCode.INSTANCE");
             }
         }
-        updater = new Updater(new Updater.UpdateListener() {
-            @Override
-            public void onReady() {
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        SyncService.getInstance(getInstance().wallet).stopAll();
-                        showMessage(Tool.getLocString("ready_to_update"), new CloseListener() {
-                            @Override
-                            public void onClose() {
-                                updater.finish();
-                            }
-                        });
-                    }
-                });
-            }
-
-            @Override
-            public void onFinish() {
-                Platform.exit();
-                System.exit(0);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                e.printStackTrace();
-                showMessage(e.getMessage());
-            }
-        });
-        updater.prepare();
+//        updater = new Updater(new Updater.UpdateListener() {
+//            @Override
+//            public void onReady() {
+//                Platform.runLater(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        SyncService.getInstance(getInstance().wallet).stopAll();
+//                        showMessage(Tool.getLocString("ready_to_update"), new CloseListener() {
+//                            @Override
+//                            public void onClose() {
+//                                updater.finish();
+//                            }
+//                        });
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//                Platform.exit();
+//                System.exit(0);
+//            }
+//
+//            @Override
+//            public void onError(Exception e) {
+//                e.printStackTrace();
+//                showMessage(e.getMessage());
+//            }
+//        });
+//        updater.prepare();
         launch(args);
     }
 
