@@ -3,6 +3,7 @@ package com.coinomi.core.wallet.families.bitcoin;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.coins.Value;
 import com.coinomi.core.coins.families.BitFamily;
+import com.coinomi.core.coins.families.NxtFamily;
 import com.coinomi.core.util.TypeUtils;
 import com.coinomi.core.wallet.SendRequest;
 
@@ -57,7 +58,7 @@ public class BitSendRequest extends SendRequest<BitTransaction> {
 
     private static void checkTypeCompatibility(CoinType type) {
         // Only Bitcoin family coins are supported
-        if (!(type instanceof BitFamily)) {
+        if (type instanceof NxtFamily) {
             throw new RuntimeException("Unsupported type: " + type);
         }
     }

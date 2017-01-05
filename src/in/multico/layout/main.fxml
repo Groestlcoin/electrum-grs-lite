@@ -19,7 +19,7 @@
                               <Insets bottom="5.0" left="5.0" top="5.0" />
                           </HBox.margin>
                       </ImageView>
-                      <Label fx:id="coinAmt" text="0.00 BTC">
+                      <Label fx:id="coinAmt" text="0.00 GRS">
                           <font>
                               <Font size="18.0" />
                           </font>
@@ -32,7 +32,7 @@
                         <Insets left="5.0" right="5.0" />
                      </padding>
                   </Label>
-                      <Label fx:id="coinAddr" prefWidth="160.0" text="1NDBbxL6jrF8fEjsCP36baNiQGJ2C3rcJE" textOverrun="CENTER_ELLIPSIS">
+                      <Label fx:id="coinAddr" prefWidth="160.0" text="FNDBbxL6jrF8fEjsCP36baNiQGJ2C3rcJE" textOverrun="CENTER_ELLIPSIS">
                           <padding>
                               <Insets left="10.0" right="5.0" />
                           </padding>
@@ -75,7 +75,7 @@
                               <Insets left="5.0" right="5.0" />
                           </HBox.margin>
                       </Button>
-                      <Button mnemonicParsing="false" onAction="#exchange" text="%change">
+                      <Button mnemonicParsing="false" visible="false" onAction="#exchange" text="%change">
                           <HBox.margin>
                               <Insets left="5.0" right="5.0" />
                           </HBox.margin>
@@ -103,13 +103,13 @@
          </padding></HBox>
    </bottom>
    <center>
-        <SplitPane dividerPositions="0.2" nodeOrientation="LEFT_TO_RIGHT" prefHeight="206.0" prefWidth="600.0">
+        <SplitPane dividerPositions="0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="206.0" prefWidth="600.0">
           <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+            <AnchorPane visible="false" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <BorderPane prefHeight="204.0" prefWidth="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                        <center>
-                            <ListView fx:id="coinsList" prefHeight="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            <ListView fx:id="coinsList" visible="false" disable="true" prefHeight="445.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                        </center>
                        <bottom>
                           <Button alignment="CENTER" mnemonicParsing="false" onAction="#addNewCoin" text="%add_coin" BorderPane.alignment="CENTER">

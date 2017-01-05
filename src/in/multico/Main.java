@@ -100,7 +100,7 @@ public class Main extends Application implements WalletAccountEventListener {
         final FXMLLoader loader = new FXMLLoader(Main.class.getResource(startLayout));
         loader.setResources(ResourceBundle.getBundle("bundles.strings", Tool.getLocale()));
         Parent root = loader.load();
-        primaryStage.setTitle("Multicoin wallet");
+        primaryStage.setTitle("electrum-grs lite");
         primaryStage.setScene(new Scene(root));
         primaryStage.setOnShown(new EventHandler<WindowEvent>() {
             @Override

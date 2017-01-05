@@ -69,7 +69,7 @@ public class Tool {
     public static List<String> getMnemonicWorList(String correctW) {
         List<String> wordList = MnemonicCode.INSTANCE.getWordList();
         if (correctW == null) return wordList;
-        wordList.remove(correctW);
+        //wordList.remove(correctW);
         List<String> rez = new ArrayList<>();
         rez.add(correctW);
         rez.add(wordList.get(getRandom(0, wordList.size()-2)));

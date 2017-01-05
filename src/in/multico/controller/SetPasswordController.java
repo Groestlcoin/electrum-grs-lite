@@ -1,6 +1,7 @@
 package in.multico.controller;
 
 import com.coinomi.core.coins.BitcoinMain;
+import com.coinomi.core.coins.GroestlCoinMain;
 import com.coinomi.core.wallet.Wallet;
 import com.coinomi.core.wallet.WalletAccount;
 import in.multico.Main;
@@ -34,7 +35,7 @@ public class SetPasswordController extends ControllerBased{
             KeyParameter aesKey = crypter.deriveKey(pass.getText());
             wallet.encrypt(crypter, aesKey);
             if (waList == null) {
-                wallet.createAccount(BitcoinMain.get(), false, aesKey);
+                wallet.createAccount(GroestlCoinMain.get(), false, aesKey);
             } else {
                 for (WalletAccount wa : waList) {
                     wa.encrypt(crypter, aesKey);

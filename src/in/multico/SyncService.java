@@ -39,6 +39,7 @@ public class SyncService {
             EguldenMain.get(),
             FeathercoinMain.get(),
             GcrMain.get(),
+            GroestlCoinMain.get(),
             GuldenMain.get(),
             IxcoinMain.get(),
             JumbucksMain.get(),
@@ -66,6 +67,8 @@ public class SyncService {
             DogecoinTest.get()
     );
     public static final List<CoinAddress> DEFAULT_COINS_SERVERS = ImmutableList.of(
+            new CoinAddress(GroestlCoinMain.get(), new ServerAddress("electrum2.groestlcoin.org", 50001),
+                    new ServerAddress("electrum1.groestlcoin.org", 50001)),
             new CoinAddress(BitcoinMain.get(), new ServerAddress("btc-cce-1.coinomi.net", 5001),
                     new ServerAddress("btc-cce-2.coinomi.net", 5001)),
             new CoinAddress(BitcoinTest.get(), new ServerAddress("btc-testnet-cce-1.coinomi.net", 15001),

@@ -4,6 +4,7 @@ import com.coinomi.core.CoreUtils;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.coins.Value;
 import com.coinomi.core.coins.families.BitFamily;
+import com.coinomi.core.coins.families.GroestlFamily;
 import com.coinomi.core.coins.families.NxtFamily;
 import com.coinomi.core.exceptions.UnsupportedCoinTypeException;
 import com.coinomi.core.protos.Protos;
@@ -278,6 +279,8 @@ final public class Wallet {
             newPocket = new WalletPocketHD(rootKey, coinType, getKeyCrypter(), key);
         } else if (coinType instanceof NxtFamily) {
             newPocket = new NxtFamilyWallet(rootKey, coinType, getKeyCrypter(), key);
+        } else if(coinType instanceof GroestlFamily) {
+            newPocket = new WalletPocketHD(rootKey, coinType, getKeyCrypter(), key);
         } else {
             throw new UnsupportedCoinTypeException(coinType);
         }

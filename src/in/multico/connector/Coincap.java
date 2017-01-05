@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Coincap extends Connection {
 
-    private static final String URL = "http://coinmarketcap-nexuist.rhcloud.com/api/$/price";
+    private static final String URL = "http://coinmarketcap-nexuist.rhcloud.com/api/BTC/price";
+    private static final String BTC_URL = "https://chainz.cryptoid.info/grs/api.dws?q=ticker.btc";
     private static Coincap instance;
     private static final long expire = 60 * 1000;
     private ConcurrentHashMap<String, PriceResult> cashe = new ConcurrentHashMap<>();
@@ -82,14 +83,18 @@ public class Coincap extends Connection {
 
     private double doGetPrice(String coin) {
         try {
+            Request btcRequest = new Request.Builder().url(BTC_URL).build();
             Request request = new Request.Builder().url(URL.replace("$", coin)).build();
             Main.log("~~> " + request);
+            Response btcResponse = new OkHttpClient().newCall(btcRequest).execute();
             Response response = new OkHttpClient().newCall(request).execute();
             String s = response.body().string();
+            String sBtc = btcResponse.body().string();
+            Double btcPrice = Double.parseDouble(sBtc);
             Main.log("<~~ " + s);
             JSONObject jo = new JSONObject(s);
             PriceResult pr = new PriceResult();
-            pr.price = jo.getDouble("usd");
+            pr.price = jo.getDouble("usd")*btcPrice;
             pr.time = System.currentTimeMillis();
             cashe.put(coin, pr);
             return pr.price;

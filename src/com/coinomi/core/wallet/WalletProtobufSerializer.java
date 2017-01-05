@@ -3,6 +3,7 @@ package com.coinomi.core.wallet;
 import com.coinomi.core.coins.CoinID;
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.coins.families.BitFamily;
+import com.coinomi.core.coins.families.GroestlFamily;
 import com.coinomi.core.coins.families.NxtFamily;
 import com.coinomi.core.protos.Protos;
 import com.coinomi.core.util.KeyUtils;
@@ -213,6 +214,8 @@ public class WalletProtobufSerializer {
                 pocket = pocketSerializer.readWallet(pocketProto, crypter);
             } else if (type instanceof NxtFamily) {
                 pocket = nxtPocketSerializer.readWallet(pocketProto, crypter);
+            } else if (type instanceof GroestlFamily) {
+                pocket = pocketSerializer.readWallet(pocketProto, crypter);
             } else {
                 throw new UnreadableWalletException("Unsupported type " + type);
             }

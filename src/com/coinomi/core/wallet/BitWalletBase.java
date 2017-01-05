@@ -140,7 +140,7 @@ abstract public class BitWalletBase extends TransactionWatcherWallet implements 
     public void verifyMessage(SignedMessage signedMessage) {
         try {
             ECKey pubKey = ECKey.signedMessageToKey(
-                    type.getSignedMessageHeader(), signedMessage.message, signedMessage.signature);
+                   signedMessage.message, signedMessage.signature);
             byte[] expectedPubKeyHash = BitAddress.from(type, signedMessage.address).getHash160();
             if (Arrays.equals(expectedPubKeyHash, pubKey.getPubKeyHash())) {
                 signedMessage.status = SignedMessage.Status.VerifiedOK;

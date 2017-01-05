@@ -2,6 +2,7 @@ package com.coinomi.core.network;
 
 import com.coinomi.core.coins.CoinType;
 import com.coinomi.core.coins.families.BitFamily;
+import com.coinomi.core.coins.families.GroestlFamily;
 import com.coinomi.core.coins.families.NxtFamily;
 import com.coinomi.core.exceptions.UnsupportedCoinTypeException;
 import com.coinomi.core.network.interfaces.BlockchainConnection;
@@ -78,6 +79,11 @@ public class ServerClients {
                 return client;
             } else if (type instanceof NxtFamily) {
                 NxtServerClient client = new NxtServerClient(addresses.get(type), connectivityHelper);
+                client.setCacheDir(cacheDir, cacheSize);
+                connections.put(type, client);
+                return client;
+            } else if (type instanceof GroestlFamily) {
+                ServerClient client = new ServerClient(addresses.get(type), connectivityHelper);
                 client.setCacheDir(cacheDir, cacheSize);
                 connections.put(type, client);
                 return client;
