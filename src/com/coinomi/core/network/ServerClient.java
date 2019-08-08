@@ -23,6 +23,7 @@ import com.google.common.util.concurrent.Service;
 import org.bitcoinj.core.Sha256Hash;
 import org.bitcoinj.core.TransactionOutPoint;
 import org.bitcoinj.core.Utils;
+import org.bitcoinj.script.ScriptBuilder;
 import org.bitcoinj.utils.ListenerRegistration;
 import org.bitcoinj.utils.Threading;
 import org.json.JSONArray;
@@ -361,17 +362,27 @@ public class ServerClient implements BitBlockchainConnection {
     }
 
     @Override
-    public void subscribeToAddresses(List<AbstractAddress> addresses, final TransactionEventListener<BitTransaction> listener) {
+    public void subscribeToAddresses(final List<AbstractAddress> addresses, final TransactionEventListener<BitTransaction> listener) {
         checkNotNull(stratumClient);
 
-        final CallMessage callMessage = new CallMessage("blockchain.address.subscribe", (List)null);
+        final CallMessage callMessage = new CallMessage("blockchain.scripthash.subscribe", (List)null);
 
         // TODO use TransactionEventListener directly because the current solution leaks memory
         StratumClient.SubscribeResultHandler addressHandler = new StratumClient.SubscribeResultHandler() {
             @Override
             public void handle(CallMessage message) {
                 try {
-                    AbstractAddress address = BitAddress.from(type, message.getParams().getString(0));
+                    String scriptHash = message.getParams().getString(0);
+
+                    //determine address
+                    AbstractAddress addressFromScriptHash = null;
+                    for(AbstractAddress address : addresses) {
+                        if(scriptHash.equals(Utils.HEX.encode(Utils.reverseBytes(Sha256Hash.createSingle(ScriptBuilder.createOutputScript((BitAddress)address).getProgram()).getBytes()))))
+                            addressFromScriptHash = address;
+                    }
+
+                    AbstractAddress address = addressFromScriptHash;//new Address(type, message.getParams().getString(0));
+
                     AddressStatus status;
                     if (message.getParams().isNull(1)) {
                         status = new AddressStatus(address, null);
@@ -380,9 +391,9 @@ public class ServerClient implements BitBlockchainConnection {
                         status = new AddressStatus(address, message.getParams().getString(1));
                     }
                     listener.onAddressStatusUpdate(status);
-                } catch (AddressMalformedException e) {
+                } /*catch (AddressMalformedException e) {
                     log.error("Address subscribe sent a malformed address", e);
-                } catch (JSONException e) {
+                }*/ catch (JSONException e) {
                     log.error("Unexpected JSON format", e);
                 }
             }
@@ -390,7 +401,8 @@ public class ServerClient implements BitBlockchainConnection {
 
         for (final AbstractAddress address : addresses) {
             log.debug("Going to subscribe to {}", address);
-            callMessage.setParam(address.toString());
+            callMessage.setParam(Utils.HEX.encode(Utils.reverseBytes(Sha256Hash.createSingle(ScriptBuilder.createOutputScript((BitAddress)address).getProgram()).getBytes())));
+
 
             ListenableFuture<ResultMessage> reply = stratumClient.subscribe(callMessage, addressHandler);
 
@@ -429,8 +441,9 @@ public class ServerClient implements BitBlockchainConnection {
                              final BitTransactionEventListener listener) {
         checkNotNull(stratumClient);
 
-        CallMessage message = new CallMessage("blockchain.address.listunspent",
-                Arrays.asList(status.getAddress().toString()));
+        CallMessage message = new CallMessage("blockchain.scripthash.listunspent",
+            Arrays.asList(Utils.HEX.encode(Utils.reverseBytes(Sha256Hash.createSingle(ScriptBuilder.createOutputScript((BitAddress)status.getAddress()).getProgram()).getBytes()))));
+
         final ListenableFuture<ResultMessage> result = stratumClient.call(message);
 
         Futures.addCallback(result, new FutureCallback<ResultMessage>() {
@@ -452,7 +465,7 @@ public class ServerClient implements BitBlockchainConnection {
 
             @Override
             public void onFailure(Throwable t) {
-                log.error("Could not get reply for blockchain.address.listunspent", t);
+                log.error("Could not get reply for blockchain.scripthash.listunspent", t);
             }
         }, Threading.USER_THREAD);
     }
@@ -462,8 +475,8 @@ public class ServerClient implements BitBlockchainConnection {
                              final TransactionEventListener<BitTransaction> listener) {
         checkNotNull(stratumClient);
 
-        final CallMessage message = new CallMessage("blockchain.address.get_history",
-                Arrays.asList(status.getAddress().toString()));
+        final CallMessage message = new CallMessage("blockchain.scripthash.get_history",
+                Arrays.asList(Utils.HEX.encode(Utils.reverseBytes(Sha256Hash.createSingle(ScriptBuilder.createOutputScript((BitAddress)status.getAddress()).getProgram()).getBytes()))));
         final ListenableFuture<ResultMessage> result = stratumClient.call(message);
 
         Futures.addCallback(result, new FutureCallback<ResultMessage>() {
@@ -488,7 +501,7 @@ public class ServerClient implements BitBlockchainConnection {
                 if (t instanceof CancellationException) {
                     log.debug("Canceling {} call", message.getMethod());
                 } else {
-                    log.error("Could not get reply for blockchain.address.get_history", t);
+                    log.error("Could not get reply for blockchain.scripthash.get_history", t);
                 }
             }
         }, Threading.USER_THREAD);
