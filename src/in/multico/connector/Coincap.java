@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Coincap extends Connection {
 
-    private static final String URL = "http://coinmarketcap-nexuist.rhcloud.com/api/BTC/price";
+    private static final String URL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/short?crypto=BTC";
     private static final String BTC_URL = "https://chainz.cryptoid.info/grs/api.dws?q=ticker.btc";
     private static Coincap instance;
     private static final long expire = 60 * 1000;
@@ -94,7 +94,8 @@ public class Coincap extends Connection {
             Main.log("<~~ " + s);
             JSONObject jo = new JSONObject(s);
             PriceResult pr = new PriceResult();
-            pr.price = jo.getDouble("usd")*btcPrice;
+            JSONObject btcusd = jo.getJSONObject("BTCUSD");
+            pr.price = btcusd.getDouble("last")*btcPrice;
             pr.time = System.currentTimeMillis();
             cashe.put(coin, pr);
             return pr.price;
