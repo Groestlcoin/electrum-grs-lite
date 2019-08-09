@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="groestlcoinj-core-0.12.3-COINOMI-4">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/groestlcoinj-core-0.12.3-COINOMI-4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
