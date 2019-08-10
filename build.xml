@@ -263,7 +263,7 @@
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
     <property name="artifact.output.multicoin:jar" value="${basedir}/out/artifacts/multicoin_jar"/>
     <mkdir dir="${artifacts.temp.dir}"/>
-    <property name="temp.jar.path.multicoin.jar" value="${artifacts.temp.dir}/multicoin.jar"/>
+    <property name="temp.jar.path.multicoin.jar" value="${artifacts.temp.dir}/groestlcoinomi.jar"/>
   </target>
   
   <target name="artifact.multicoin:jar" depends="init.artifacts, compile.module.multicoin" description="Build &#39;multicoin:jar&#39; artifact">
@@ -289,7 +289,7 @@
         <attribute name="Main-Class" value="in.multico.Main"/>
       </manifest>
     </jar>
-    <copy file="${temp.jar.path.multicoin.jar}" tofile="${artifact.temp.output.multicoin:jar}/multicoin.jar"/>
+    <copy file="${temp.jar.path.multicoin.jar}" tofile="${artifact.temp.output.multicoin:jar}/groestlcoinomi.jar"/>
   </target>
   
   <target name="build.all.artifacts" depends="artifact.multicoin:jar" description="Build all artifacts">
@@ -303,7 +303,7 @@
   </target>
 
   <target name="mac" depends="build.modules, build.all.artifacts">
-    <echo message="creating mac native application from ${artifact.output.multicoin:jar}/multicoin.jar" />
+    <echo message="creating mac native application from ${artifact.output.multicoin:jar}/groestlcoinomi.jar" />
     <mkdir dir="${multicoin.macos.app.dir}"/>
     <mkdir dir="${multicoin.macos.app.tmp.dir}"/>
     <taskdef name="bundleapp-mac" classname="com.oracle.appbundler.AppBundlerTask" classpath="${basedir}/lib/appbundler-1.0.jar" />
@@ -316,7 +316,7 @@
                applicationCategory="public.app-category.finance"
                mainclassname="in.multico.Main">
       <runtime dir="${path.java}"/>
-      <classpath file="${artifact.output.multicoin:jar}/multicoin.jar"/>
+      <classpath file="${artifact.output.multicoin:jar}/groestlcoinomi.jar"/>
       <option value="-Dapple.laf.useScreenMenuBar=true"/>
     </bundleapp-mac>
     <echo message="try to fix resolution..."/>
@@ -343,17 +343,17 @@
   </target>
 
   <target name="win" depends="build.modules, build.all.artifacts">
-    <echo message="creating windows exe from ${artifact.output.multicoin:jar}/multicoin.jar" />
+    <echo message="creating windows exe from ${artifact.output.multicoin:jar}/groestlcoinomi.jar" />
     <mkdir dir="${multicoin.win.app.dir}"/>
     <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="${l4j.dir}/launch4j.jar:${l4j.dir}/xstream.jar" />
     <launch4j
-            outfile="${multicoin.win.app.dir}/multicoin.exe"
-            jar="${artifact.output.multicoin:jar}/multicoin.jar"
+            outfile="${multicoin.win.app.dir}/groestlcoinomi.exe"
+            jar="${artifact.output.multicoin:jar}/groestlcoinomi.jar"
             configFile="${l4j.dir}/winL4j.xml" />
   </target>
 
   <target name="deb" depends="build.modules, build.all.artifacts">
-    <echo message="creating debian package from ${artifact.output.multicoin:jar}/multicoin.jar" />
+    <echo message="creating debian package from ${artifact.output.multicoin:jar}/groestlcoinomi.jar" />
     <mkdir dir="${multicoin.deb.app.tmp.dir}"/>
     <taskdef name="deb" classname="org.vafer.jdeb.ant.DebAntTask" classpath="${basedir}/lib/jdeb-1.5.jar"/>
     <copy todir="${multicoin.deb.app.tmp.dir}">
@@ -365,7 +365,7 @@
       </filterset>
     </copy>
     <deb destfile="${multicoin.deb.app.dir}/${ant.project.name}.deb" control="${multicoin.deb.app.tmp.dir}" verbose="true">
-      <data src="${artifact.output.multicoin:jar}/multicoin.jar" type="file">
+      <data src="${artifact.output.multicoin:jar}/groestlcoinomi.jar" type="file">
         <mapper type="perm" prefix="/usr/lib/multicoin"/>
       </data>
       <data src="${basedir}/deb/multicoin.sh" type="file">
